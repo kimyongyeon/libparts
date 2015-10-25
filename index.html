@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<div id="dtc">delay() test click</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="babypaunch.libparts.js"></script>
+	<script>
+		$("#dtc").click(function(){
+			delay(function(){
+				alert("alert after 2sec");
+			}, 2000);
+		});
+
+		alert((1445562073583).datefy("yyyy.mm.dd hh:mi:ss.ms"));
+	</script>
+</body>
+</html>
