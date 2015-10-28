@@ -2,9 +2,15 @@
 <html lang="ko">
 <head>
 	<meta charset="UTF-8">
+	<style>
+		button {padding: 10px;}
+	</style>
 </head>
 <body>
-	<div id="dtc">delay() test click</div>
+	<div>
+		<button id="dtc">delay() test click</button>
+	</div>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="babypaunch.libparts.js"></script>
 	<script>
@@ -14,7 +20,9 @@
 			}, 2000);
 		});
 
-		alert((1445562073583).datefy("yyyy.mm.dd hh:mi:ss.ms"));
+		console.log("datefy 1: " + L.datefy(1445562073583, "yyyy.mm.dd hh:mi:ss.ms"));
+		console.log("datefy 2: " + L.datefy(new Date().getTime(), "MM dd yyyy NN HH:mi:ss"));
+		console.log("datefy 3: " + L.datefy("1445562073583", "mm/dd/YY hh:mi:ss.ms"));
 	</script>
 </body>
 </html>
