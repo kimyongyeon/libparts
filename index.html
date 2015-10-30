@@ -7,9 +7,13 @@
 	</style>
 </head>
 <body>
-	<div>
+	<div style="margin-bottom: 10px;">
 		<button id="dtc">delay() test click</button>
 	</div>
+
+	<table id="table1">
+		<tr><td colspan="2" style="background: #eee">L.datefy() sample</td></tr>
+	</table>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="babypaunch.libparts.js"></script>
@@ -20,9 +24,9 @@
 			}, 2000);
 		});
 
-		console.log("datefy 1: " + L.datefy(1445562073583, "yyyy.mm.dd hh:mi:ss.ms"));
-		console.log("datefy 2: " + L.datefy(new Date().getTime(), "MM dd yyyy NN HH:mi:ss"));
-		console.log("datefy 3: " + L.datefy("1445562073583", "mm/dd/YY hh:mi:ss.ms"));
+		$("#table1").append("<tr><td>L.datefy(1445562073583, 'yyyy.mm.dd hh:mi:ss.ms')</td><td>: " + L.datefy(1445562073583, "yyyy.mm.dd hh:mi:ss.ms") + "</td></tr>");
+		$("#table1").append("<tr><td>L.datefy(new Date().getTime(), 'MM dd yyyy NN HH:mi:ss')</td><td>: " + L.datefy(new Date().getTime(), 'MM dd yyyy NN HH:mi:ss') + "</td></tr>");
+		$("#table1").append("<tr><td>L.datefy('1445562073583', 'mm/dd/YY hh:mi:ss.ms')</td><td>: " + L.datefy("1445562073583", "mm/dd/YY hh:mi:ss.ms") + "</td></tr>");
 	</script>
 </body>
 </html>
