@@ -2,9 +2,6 @@
 <html lang="ko">
 <head>
 	<meta charset="UTF-8">
-	<style>
-		button {padding: 10px;}
-	</style>
 </head>
 <body>
 	<div style="margin-bottom: 10px;">
@@ -15,6 +12,15 @@
 		<tr><td colspan="2" style="background: #eee">L.datefy() sample</td></tr>
 	</table>
 
+	<div style="height: 200px; overflow-y: auto;">
+		<table>
+			<tr><td colspan="4" style="background: #eee">L.validate() sample</td></tr>
+			<tr><td>숫자</td><td><input type="text" class="test1"/></td><td><button type="button" class="check">CHECK</button></td><td class="monitor"></td></tr>
+			<tr><td>숫자</td><td><input type="text" class="test1"/></td><td><button type="button" class="check">CHECK</button></td><td class="monitor"></td></tr>
+			<tr><td>정규식 > 숫자</td><td><input type="text" class=""/></td><td><button type="button" class="check">CHECK</button></td><td class="monitor"></td></tr>
+			<tr><td colspan="4"><button type="button" class="all">ALL</button></td></tr>
+		</table>
+	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="babypaunch.libparts.js"></script>
 	<script>
@@ -27,6 +33,34 @@
 		$("#table1").append("<tr><td>L.datefy(1445562073583, 'yyyy.mm.dd hh:mi:ss.ms')</td><td>: " + L.datefy(1445562073583, "yyyy.mm.dd hh:mi:ss.ms") + "</td></tr>");
 		$("#table1").append("<tr><td>L.datefy(new Date().getTime(), 'MM dd yyyy NN HH:mi:ss')</td><td>: " + L.datefy(new Date().getTime(), 'MM dd yyyy NN HH:mi:ss') + "</td></tr>");
 		$("#table1").append("<tr><td>L.datefy('1445562073583', 'mm/dd/YY hh:mi:ss.ms')</td><td>: " + L.datefy("1445562073583", "mm/dd/YY hh:mi:ss.ms") + "</td></tr>");
+
+		$("button.check").each(function(index){
+			$(this).click(function(){
+				var result = "";
+				switch(index){
+					case 0:
+						result = L.validate($("input").eq(index), {"rule": "num", "required": true, "minLength": 2, "maxLength": 5, "minValue": 50, "maxValue": 32767});
+					break;
+					case 1:
+						result = L.validate($("input").eq(index), {"rule": "num", "required": true});
+					break;
+					case 2:
+						result = L.validate($("input").eq(index), {"rule": /[0-9]/g});
+					break;
+				} //end: switch(index){
+				$(this).closest("tr").find("td.monitor").text(JSON.stringify(result));
+			}); //end: $(this).click(function(){
+		}); //end: $("button.check").each(function(index){
+
+		$("button.all").click(function(){
+			var r = L.validate($("input.test1"), {"rule": "num", "required": true});
+			for(var i = 0; i < r.length; i++){
+				console.log(JSON.stringify(r[i]));
+				if(r[i].code !== 0){
+					r[i].$obj.css("background", "red");
+				}
+			}
+		});
 	</script>
 </body>
 </html>
