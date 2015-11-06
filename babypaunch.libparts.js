@@ -129,36 +129,51 @@ var L = {
 		var cfg = {
 			lang: "ko" //언어설정
 			, regexp: { //정규식
-				en: /[^a-z]/g
+				email: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+				, en: /[^a-z]/g
 				, EN: /[^A-Z]/g
 				, En: /[^a-zA-Z]/g
-				, num: /[^0-9]/g
+				, En_num: /[^a-zA-Z0-9]/g 
+				, En_ko: /[^a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣\x20]/g 
+				, En_ko_num: /[^a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣\x200-9]/g 
+				, ipv4: /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+				, ipv6: /^([0-9a-fA-F]{4}:){7}([0-9a-fA-F]{4})$/
 				, ko: /[^ㄱ-ㅎㅏ-ㅣ가-힣\x20]/g
+				, mac: /^([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})$/
+				, num: /[^0-9]/g
 			} //end: , regexp: {
 			, msg: { //알림 메세지
 				ko: { 
-					exception: "예외가 발생하였습니다."
-					, selector: " 객체가 존재하지 않습니다."
-					, unexpect: " 요구되는 값이 입력되지 않았습니다."
-					, required: "필수 값을 입력해주세요."
-					, en: "소문자를 입력해주세요."
-					, EN: "대문자를 입력해주세요."
-					, En: "대소문자를 입력해주세요."
-					, num: "숫자를 입력해주세요."
+					array: "정규식에 알맞은 값을 입력해주세요."
+					, email: "이메일 형식에 맞게 입력해주세요."
+					, en: "영어소문자를 입력해주세요."
+					, EN: "영어대문자를 입력해주세요."
+					, En: "영어대소문자를 입력해주세요."
+					, En_num: "영어대소문자, 숫자를 입력해주세요."
+					, En_ko: "영어대소문자, 한글을 입력해주세요."
+					, En_ko_num: "영어대소문자, 한글, 숫자를 입력해주세요."
+					, exception: "예외가 발생하였습니다."
+					, ipv4: "IPv4 형식에 맞게 입력하세요."
+					, ipv6: "IPv6 형식에 맞게 입력하세요."
 					, ko: "한글을 입력해주세요."
-					, regexp: "정규식에 알맞은 값을 입력해주세요."
+					, mac: "MAC주소가 올바르지 않습니다."
 					, minLength: function(length){
 						return "최소 " + length + "자를 입력하세요.";
-					}
-					, maxLength: function(length){
-						return "최대 " + length + "자를 입력할 수 있습니다.";
 					}
 					, minValue: function(value){
 						return "최소 " + value + "값을 입력하세요.";
 					}
+					, maxLength: function(length){
+						return "최대 " + length + "자를 입력할 수 있습니다.";
+					}
 					, maxValue: function(value){
 						return "최대 " + value + "값을 입력할 수 있습니다.";
 					}
+					, num: "숫자를 입력해주세요."
+					, regexp: "정규식에 알맞은 값을 입력해주세요."
+					, required: "필수 값을 입력해주세요."
+					, selector: " 객체가 존재하지 않습니다."
+					, unexpect: " 요구되는 값이 입력되지 않았습니다."
 				} //end: ko: {
 			} //end: , msg: {
 			, trim: true
@@ -170,69 +185,63 @@ var L = {
 			, maxLength: null
 			, minValue: null
 			, maxValue: null
-			, check: function(results, $this, $var){
+			, setResult: function(results, $this, $var, type){ //results, 현재 객체, 처리 순서, 처리 분류
 				var _msg = this.msg[this.lang];
 
-				if($var === "required"){
-					if(this[$var]){
-						if(this.reset){ //reset이 true면
-							$this.val("");
-						}
-						if(this.alert){ //alert가 true면
-							alert(_msg[$var]);
-						}
-						$this.focus(); //focus를 위치시킴.
-						results.push({$obj: $this, msg: _msg[$var], code: $var});
-					}
-				}else if($var === "minLength"){
-					if(this[$var] !== null){
-						if($this.val().length < this[$var]){ //길이가 minLength보다 짧으면
-							if(this.alert){ //alert가 true면
-								alert(_msg[$var](this[$var]));
-							}
-							$this.focus(); //focus를 위치시킴.
-							results.push({$obj: $this, msg: _msg[$var](this[$var]), code: $var});
-						}
-					}
-				}else if($var === "maxLength"){
-					if(this[$var] !== null){
-						if($this.val().length > this[$var]){ //길이가 maxLength보다 길면
-							if(this.alert){ //alert가 true면
-								alert(_msg[$var](this[$var]));
-							}
-							$this.focus(); //focus를 위치시킴.
-							results.push({$obj: $this, msg: _msg[$var](this[$var]), code: $var});
-						}
-					}
-				}else if($var === "minValue"){
-					if(this[$var] !== null){
-						var _val = $this.val() * 1;
-						if(!isNaN(_val)){
-							if(_val < this[$var]){ //크기가 minValue보다 작으면
-								$this.val(this[$var]); //최소값으로 초기화
-								if(this.alert){ //alert가 true면
-									alert(_msg[$var](this[$var]));
-								}
-								$this.focus(); //focus를 위치시킴.
-								results.push({$obj: $this, msg: _msg[$var](this[$var]), code: $var});
-							}
-						}
-					}
-				}else if($var === "maxValue"){
-					if(this[$var] !== null){
-						var _val = $this.val() * 1;
-						if(!isNaN(_val)){
-							if(_val > this[$var]){ //크기가 maxValue보다 크면
-								$this.val(this[$var]); //최대값으로 초기화
-								if(this.alert){ //alert가 true면
-									alert(_msg[$var](this[$var]));
-								}
-								$this.focus(); //focus를 위치시킴.
-								results.push({$obj: $this, msg: _msg[$var](this[$var]), code: $var});
-							}
-						}
-					}
+				if(type === 0 && this.reset){ //reset이 true면
+					$this.val("");
 				}
+
+				if(this.alert){ //alert가 true면
+					alert(type === 0 ? _msg[$var] : _msg[$var](this[$var]));
+				}
+
+				$this.focus(); //focus를 위치시킴.
+
+				results.push({$obj: $this, msg: type === 0 ? _msg[$var] : _msg[$var](this[$var]), code: $var});
+			}
+			, check: function(results, $this, $var){ //results, 현재 객체, 처리 순서
+				switch($var){
+					case "required":
+						if(this[$var]){ //required가 true이면
+							this.setResult(results, $this, $var, 0);
+						}
+					break;
+					case "minLength":
+						if(this[$var] !== null && $this.val().length < this[$var]){ //minLength가 값이 있고, 길이가 minLength보다 짧으면
+							this.setResult(results, $this, $var, 1);
+						}
+					break;
+					case "maxLength":
+						if(this[$var] !== null && $this.val().length > this[$var]){ //maxLength가 값이 있고, 길이가 maxLength보다 길면
+							this.setResult(results, $this, $var, 1);
+						}
+					break;
+					case "minValue":
+						if(this[$var] !== null){
+							var _val = $this.val() * 1;
+							if(!isNaN(_val) && _val < this[$var]){ //minValue가 값이 있고, 크기가 minValue보다 작으면
+								$this.val(this[$var]); //최소값으로 초기화
+								this.setResult(results, $this, $var, 1);
+							}
+						}
+					break;
+					case "maxValue":
+						if(this[$var] !== null){
+							var _val = $this.val() * 1;
+							if(!isNaN(_val) && _val > this[$var]){ //maxValue가 값이 있고, 크기가 maxValue보다 크면
+								$this.val(this[$var]); //최대값으로 초기화
+								this.setResult(results, $this, $var, 1);
+							}
+						}
+					break;
+					case "array":
+						this.setResult(results, $this, $var, 0);
+					break;
+					default:
+						this.setResult(results, $this, $var, 0);
+					break;
+				} //end: switch($var){
 			} //end: , check: function($this, $var){
 		}; //end: var cfg = {
 		$.extend(true, cfg, opts);
@@ -249,14 +258,14 @@ var L = {
 			}else{ //참조객체가 1개 이상이면
 				var results = [];
 
-				$obj.each(function(idx){
-					var $this = $(this);
-					var $val = $this.val();
+				$obj.each(function(idx){ //동일 객체마다 실행
+					var $this = $(this); //현재 객체
+					var $val = $this.val(); //현재 값
 
 					if(cfg.trim){ //trim 설정이 true면
 						$this.val($val.trim()); //앞뒤 공백 제거
 					}
-					$val = $this.val();
+					$val = $this.val(); //공백 제거된 현재 값
 
 					if($val.length === 0){ //길이가 0이면
 						cfg.check(results, $this, "required");
@@ -270,40 +279,16 @@ var L = {
 							case "string": //문자열이면
 								$var = opts.rule;
 								if(cfg.regexp[$var].test($val)){
-									if(cfg.reset){ //reset이 true면
-										$this.val("");
-									}
-									if(cfg.alert){ //alert가 true면
-										alert(_msg[$var]);
-									}
-									$this.focus(); //focus를 위치시킴.
-									results.push({$obj: $this, msg: _msg[$var], code: $var});
+									cfg.check(results, $this, $var); //동일한 정규식 체크
 								}
 							break;
 							case "regexp": //정규식이면
-								$var = "regexp";
 								if(opts.rule.test($val)){
-									if(cfg.reset){ //reset이 true면
-										$this.val("");
-									}
-									if(cfg.alert){ //alert가 true면
-										alert(_msg[$var]);
-									}
-									$this.focus(); //focus를 위치시킴.
-									results.push({$obj: $this, msg: _msg[$var], code: $var});
+									cfg.check(results, $this, "regexp"); //입력받은 정규식 체크
 								}
 							break;
 							default: //기타면
-								rule = false;
-								$var = "unexpect";
-								if(cfg.reset){ //reset이 true면
-									$this.val("");
-								}
-								if(cfg.alert){ //alert가 true면
-									alert(_msg[$var]);
-								}
-								$this.focus(); //focus를 위치시킴.
-								results.push({$obj: $this, msg: _msg[$var], code: $var});
+								cfg.check(results, $this, "unexpect"); //기대하지 못한 값을 설정
 							break;
 						} //end: switch($.type(opts.rule)){
 					} //end: }else{
