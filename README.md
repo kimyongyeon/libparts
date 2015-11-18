@@ -1,21 +1,51 @@
 # libparts
-javascirpt libs for share
+<p>javascirpt libs for share</p>
+<p>contact: babypaunch@gmail.com</p>
 
-1. window static method
+1. window static function 
+<table>
+	<tr>
+		<th>#</th>
+		<th>title</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td>1</td>
+		<td>onerror</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td>delay</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>3</td>
+		<td>pad</td>
+		<td></td>
+	</tr>
+</table>
 
-1. onerror
+2. L libraries
+<table>
+	<tr>
+		<th>#</th>
+		<th>title</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td>1</td>
+		<td>datefy</td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>2</td>
+		<td>validate</td>
+		<td></td>
+	</tr>
+</table>
 
-2. delay
-
-3. pad
-
-4. L
-
-4.1. datefy
-
-4.2. validate
-
-5. loadmap
+3. loadmap
 <table>
   <tr>
     <th>#</th>

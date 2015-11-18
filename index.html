@@ -2,25 +2,60 @@
 <html lang="ko">
 <head>
 	<meta charset="UTF-8">
+	<style>
+		table {width: 100%; table-layout: fixed; border-collapse: collapse;}
+		tr:nth-child(odd) {background: #eee;}
+		td.title {background: skyblue; padding: 5px; color: white;}
+		td.result {background: black; padding: 5px; color: white;}
+		td input {width: 97%;}
+
+		button#dtc {padding: 10px; font-size: 1.2em;}
+		table.table1 {margin-top: 20px;}
+	</style>
 </head>
 <body>
-	<div style="margin-bottom: 10px;">
+	<div>
 		<button id="dtc">delay() test click</button>
 	</div>
 
-	<table id="table1">
-		<tr><td colspan="2" style="background: #eee">L.datefy() sample</td></tr>
+	<table class="table1">
+		<col>
+		<col style="width: 200px;">
+		<tr><td class="title" colspan="2">L.datefy() sample</td></tr>
+		<tr>
+			<td>1445562073583, 'yyyy.mm.dd hh:mi:ss.ms'</td>
+			<td class="datefy"></td>
+		</tr>
+		<tr>
+			<td>new Date().getTime(), 'MM dd yyyy NN HH:mi:ss'</td>
+			<td class="datefy"></td>
+		</tr>
+		<tr>
+			<td>'1445562073583', 'mm/dd/YY hh:mi:ss.ms'</td>
+			<td class="datefy"></td>
+		</tr>
 	</table>
 
-	<div style="height: 200px; overflow-y: auto;">
-		<table>
-			<tr><td colspan="4" style="background: #eee">L.validate() sample</td></tr>
-			<tr><td class="reg"></td><td><input type="text" class="test1"/></td><td><button type="button" class="check">CHECK</button></td><td class="monitor"></td></tr>
-			<tr><td class="reg"></td><td><input type="text" class="test1"/></td><td><button type="button" class="check">CHECK</button></td><td class="monitor"></td></tr>
-			<tr><td class="reg"></td><td><input type="text" class=""/></td><td><button type="button" class="check">CHECK</button></td><td class="monitor"></td></tr>
-			<tr><td colspan="4"><button type="button" class="all">ALL</button></td></tr>
-		</table>
-	</div>
+	<table class="table1">
+		<col>
+		<col style="width: 150px;">
+		<tr><td class="title" colspan="2">L.validate() sample</td></tr>
+		<tr>
+			<td class="reg">{"rule": "num", "required": true, "minLength": 2, "maxLength": 5, "minValue": 50, "maxValue": 32767}</td>
+			<td><input type="text" class="test1"/></td>
+		</tr>
+		<tr>
+			<td class="reg">En_ko_num</td>
+			<td><input type="text" class="test1"/></td>
+		</tr>
+		<tr>
+			<td class="reg">/[0-9]/g</td>
+			<td><input type="text" class=""/></td>
+		</tr>
+		<tr><td colspan="2"><button type="button" class="check">CHECK ALL</button></td></tr>
+		<tr><td colspan="2" class="result"></td></tr>
+	</table>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="babypaunch.libparts.js"></script>
 	<script>
@@ -30,40 +65,27 @@
 			}, 2000);
 		});
 
-		$("#table1").append("<tr><td>L.datefy(1445562073583, 'yyyy.mm.dd hh:mi:ss.ms')</td><td>: " + L.datefy(1445562073583, "yyyy.mm.dd hh:mi:ss.ms") + "</td></tr>");
-		$("#table1").append("<tr><td>L.datefy(new Date().getTime(), 'MM dd yyyy NN HH:mi:ss')</td><td>: " + L.datefy(new Date().getTime(), 'MM dd yyyy NN HH:mi:ss') + "</td></tr>");
-		$("#table1").append("<tr><td>L.datefy('1445562073583', 'mm/dd/YY hh:mi:ss.ms')</td><td>: " + L.datefy("1445562073583", "mm/dd/YY hh:mi:ss.ms") + "</td></tr>");
-
-		$("td.reg").eq(0).text("num");
-		$("td.reg").eq(1).text("En_ko_num");
-		$("td.reg").eq(2).text("/[0-9]/g");
-
-		$("button.check").each(function(index){
-			$(this).click(function(){
-				var result = "";
-				switch(index){
-					case 0:
-						result = L.validate($("input").eq(index), {"rule": "num", "required": true, "minLength": 2, "maxLength": 5, "minValue": 50, "maxValue": 32767});
-					break;
-					case 1:
-						result = L.validate($("input").eq(index), {"rule": "En_ko_num", "required": true});
-					break;
-					case 2:
-						result = L.validate($("input").eq(index), {"rule": /[0-9]/g});
-					break;
-				} //end: switch(index){
-				$(this).closest("tr").find("td.monitor").text(JSON.stringify(result));
-			}); //end: $(this).click(function(){
-		}); //end: $("button.check").each(function(index){
-
-		$("button.all").click(function(){
-			var r = L.validate($("input.test1"), {"rule": "num", "required": true});
-			for(var i = 0; i < r.length; i++){
-				console.log(JSON.stringify(r[i]));
-				if(r[i].code !== 0){
-					r[i].$obj.css("background", "red");
-				}
+		$(".table1").eq(0).find("tr").each(function(index){
+			switch(index){
+				case 1:
+					return $(this).find("td:odd").text(L.datefy(1445562073583, "yyyy.mm.dd hh:mi:ss.ms"));
+				case 2:
+					return $(this).find("td:odd").text(L.datefy(new Date().getTime(), 'MM dd yyyy NN HH:mi:ss'));
+				case 3:
+					return $(this).find("td:odd").text(L.datefy('1445562073583', 'mm/dd/YY hh:mi:ss.ms'));
 			}
+		});
+
+		$("button.check").click(function(){
+			var results = [];
+			results.push(L.validate($("input").eq(0), {"rule": "num", "required": true, "minLength": 2, "maxLength": 5, "minValue": 50, "maxValue": 32767}));
+			results.push(L.validate($("input").eq(1), {"rule": "En_ko_num"}));
+			results.push(L.validate($("input").eq(2), {"rule": /[0-9]/g}));
+			var texts = "";
+			for(var i = 0; i < results.length; i++){
+				texts += i === 0 ? JSON.stringify(results[i]) : "\n, " + JSON.stringify(results[i]);
+			}
+			$("td.result").text(texts);
 		});
 	</script>
 </body>
