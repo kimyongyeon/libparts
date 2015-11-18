@@ -12,3 +12,8 @@ javascirpt libs for share
 4.1. datefy
 
 4.2. validate
+
+5. loadmap
+5.1. jsonize
+5.2. watch
+5.3. submit
