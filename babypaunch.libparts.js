@@ -1,16 +1,13 @@
 /*
 * javascript libs for share
-* 만든이: 정대규
-* 일시: 2015.10.24
-* 버전: 0.1
-* lisence: MIT(공짜)
+* dev: 정대규
+* first: 2015.10.24
+* update: 2015.11.20
+* version: 0.3
+* lisence: MIT(free)
 */
 "use strict";
 
-/*
-* validate 설정시 예기치 못한 에러가 발생하면
-* try ~ catch를 사용해도 소용없음.
-*/
 window.onerror = function(e){
 	alert(e);
 }
@@ -40,15 +37,6 @@ String.prototype.pad = function(length){
 } //end: String.prototype.pad = function(length){
 
 var L = {
-	/*
-	* datefy()의 parameter 설명
-	* 1. date: unix timestamp 형태로 날짜 정보를 가지는 값, 문자열/숫자를 넘길 수 있음.
-	* 2. format: 문자열의 날짜 포맷 조합, 구분자는 아래 키워드를 제외한 어떤 문자열이든 가능함
-	* yyyy(년), mm(월), dd(일), hh(24시), mi(분), ss(초), ms(밀리초)
-	* YY(뒤2자리년), MM(9월/Sep), WW(일/Sun), NN(오전/오후,AM/PM), HH(12시)
-	* 3. language: 언어셋 문자열(비설정시 영어, 설정시(ko/en))
-	*/
-
 	datefy: function(date, format, language){
 		Number.prototype.lPad0 = function(length){
 			return "0".pad(length - this.toString().length) + this;
@@ -282,4 +270,16 @@ var L = {
 			return {msg: _msg.exception, code: "exception"};
 		}
 	} //end: , validate: function($obj, opts, lang){
+	
+	, jsonize: function(map){
+		var json = {};
+		var arr = map.replace(/{/gi, "").replace(/}/gi, "").split(",");
+
+		for(var i = 0; i < arr.length; i++){
+			var pair = arr[i].split("=");
+			json[$.trim(pair[0])] = $.trim(pair[1]);
+		}
+
+		return json;
+	} //end: , jsonize: function(map){
 }; //end: var L = {
