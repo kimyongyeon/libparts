@@ -3,7 +3,7 @@
 <p>contact: babypaunch@gmail.com</p>
 <p>sample: index.html</p>
 
-# 1. window static function 
+# 1. window static functions
 <table>
 	<tr>
 		<th>#</th>

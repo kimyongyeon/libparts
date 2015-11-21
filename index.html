@@ -2,21 +2,122 @@
 <html lang="ko">
 <head>
 	<meta charset="UTF-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 	<style>
-		table {width: 100%; table-layout: fixed; border-collapse: collapse;}
-		tr:nth-child(odd) {background: #eee;}
-		td.title {background: skyblue; padding: 5px; color: white;}
-		td.result {background: black; padding: 5px; color: white;}
-		td input {width: 97%;}
-
-		button#dtc {padding: 10px; font-size: 1.2em;}
-		table.table1 {margin-top: 20px;}
+		body {padding: 10px;}
+		pre {text-align: left;}
 	</style>
 </head>
 <body>
+	<h1>window static functions</h1>
 	<div>
-		<button id="dtc">delay() test click</button>
+		<button class="btn delay">delay() test</button>
+<pre class="prettyprint">
+$("button.delay").click(function(){
+	delay(function(){
+		alert("alert after 2sec");
+	}, 2000);
+});
+</pre>
 	</div>
+
+	<h1>L libraries</h1>
+	<div class="validate0">
+		<input type="text" class="validate0" placeholder="must input any texts."/>
+		<button type="button" class="btn btn-sm validate0">validate0</button>
+<pre class="prettyprint">
+$("button.validate0").click(function(){
+	var results = [];
+	results.push(L.validate($("input.validate0"), {"required": true}));
+	console.log(JSON.stringify(results));
+});
+</pre>
+	</div><!-- /div.validate0 -->
+
+	<div class="validate1">
+		<input type="text" class="validate1" placeholder="must input any texts."/>
+		<button type="button" class="btn btn-sm validate1">validate1</button>
+<pre class="prettyprint">
+$("button.validate1").click(function(){
+	var results = [];
+	results.push(L.validate($("input.validate1"), {"required": true, "alert": false}));
+	console.log(JSON.stringify(results));
+});
+</pre>
+	</div><!-- /div.validate1 -->
+
+	<div class="validate2">
+		<input type="text" class="validate2" placeholder="2 <= length && 5 >= length"/>
+		<button type="button" class="btn btn-sm validate2">validate2</button>
+<pre class="prettyprint">
+$("button.validate2").click(function(){
+	var results = [];
+	results.push(L.validate($("input.validate2"), {"required": true, "minLength": 2, "maxLength": 5}));
+	console.log(JSON.stringify(results));
+});
+</pre>
+	</div><!-- /div.validate2 -->
+
+	<div class="validate3">
+		<input type="text" class="validate3" placeholder="100 <= value && 32767 >= value"/>
+		<button type="button" class="btn btn-sm validate3">validate3</button>
+<pre class="prettyprint">
+$("button.validate3").click(function(){
+	var results = [];
+	results.push(L.validate($("input.validate3"), {"required": true, "minValue": 100, "maxValue": 32767}));
+	console.log(JSON.stringify(results));
+});
+</pre>
+	</div><!-- /div.validate3 -->
+
+	<div class="validate4">
+		<input type="text" class="validate4" placeholder="0-9"/>
+		<button type="button" class="btn btn-sm validate4">validate4</button>
+<pre class="prettyprint">
+$("button.validate4").click(function(){
+	var results = [];
+	results.push(L.validate($("input.validate4"), {"required": true, "rule": "num"}));
+	console.log(JSON.stringify(results));
+});
+</pre>
+	</div><!-- /div.validate4 -->
+
+	<div class="validate5">
+		<input type="text" class="validate5" placeholder="a-zA-Z"/>
+		<button type="button" class="btn btn-sm validate5">validate5</button>
+<pre class="prettyprint">
+$("button.validate5").click(function(){
+	var results = [];
+	results.push(L.validate($("input.validate5"), {"required": true, "rule": "En"}));
+	console.log(JSON.stringify(results));
+});
+</pre>
+	</div><!-- /div.validate5 -->
+
+	<div class="validate6">
+		<input type="text" class="validate6" placeholder="ㄱ-ㅎㅏ-ㅣ가-힣"/>
+		<button type="button" class="btn btn-sm validate6">validate6</button>
+<pre class="prettyprint">
+$("button.validate6").click(function(){
+	var results = [];
+	results.push(L.validate($("input.validate6"), {"required": true, "rule": "ko"}));
+	console.log(JSON.stringify(results));
+});
+</pre>
+	</div><!-- /div.validate6 -->
+
+	<div class="validate7">
+		<input type="text" class="validate7" placeholder="a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9"/>
+		<button type="button" class="btn btn-sm validate7">validate7</button>
+<pre class="prettyprint">
+$("button.validate7").click(function(){
+	var results = [];
+	results.push(L.validate($("input.validate7"), {"required": true, "rule": "En_ko_num"}));
+	console.log(JSON.stringify(results));
+});
+</pre>
+	</div><!-- /div.validate7 -->
+<!--
 
 	<table class="table1">
 		<col>
@@ -35,36 +136,68 @@
 			<td class="datefy"></td>
 		</tr>
 	</table>
+	-->
 
-	<table class="table1">
-		<col>
-		<col style="width: 150px;">
-		<tr><td class="title" colspan="2">L.validate() sample</td></tr>
-		<tr>
-			<td class="reg">{"rule": "num", "required": true, "minLength": 2, "maxLength": 5, "minValue": 50, "maxValue": 32767}</td>
-			<td><input type="text" class="test1"/></td>
-		</tr>
-		<tr>
-			<td class="reg">En_ko_num</td>
-			<td><input type="text" class="test1"/></td>
-		</tr>
-		<tr>
-			<td class="reg">/[0-9]/g</td>
-			<td><input type="text" class=""/></td>
-		</tr>
-		<tr><td colspan="2"><button type="button" class="check">CHECK ALL</button></td></tr>
-		<tr><td colspan="2" class="result"></td></tr>
-	</table>
-
+	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=doxy"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
 	<script src="babypaunch.libparts.js"></script>
 	<script>
-		$("#dtc").click(function(){
+		$("button.delay").click(function(){
 			delay(function(){
 				alert("alert after 2sec");
 			}, 2000);
 		});
 
+		$("button.validate0").click(function(){
+			var results = [];
+			results.push(L.validate($("input.validate0"), {"required": true}));
+			console.log(JSON.stringify(results));
+		});
+
+		$("button.validate1").click(function(){
+			var results = [];
+			results.push(L.validate($("input.validate1"), {"required": true, "alert": false}));
+			console.log(JSON.stringify(results));
+		});
+
+		$("button.validate2").click(function(){
+			var results = [];
+			results.push(L.validate($("input.validate2"), {"required": true, "minLength": 2, "maxLength": 5}));
+			console.log(JSON.stringify(results));
+		});
+
+		$("button.validate3").click(function(){
+			var results = [];
+			results.push(L.validate($("input.validate3"), {"required": true, "minValue": 100, "maxValue": 32767}));
+			console.log(JSON.stringify(results));
+		});
+
+		$("button.validate4").click(function(){
+			var results = [];
+			results.push(L.validate($("input.validate4"), {"required": true, "rule": "num"}));
+			console.log(JSON.stringify(results));
+		});
+
+		$("button.validate5").click(function(){
+			var results = [];
+			results.push(L.validate($("input.validate5"), {"required": true, "rule": "En"}));
+			console.log(JSON.stringify(results));
+		});
+
+		$("button.validate6").click(function(){
+			var results = [];
+			results.push(L.validate($("input.validate6"), {"required": true, "rule": "ko"}));
+			console.log(JSON.stringify(results));
+		});
+
+		$("button.validate7").click(function(){
+			var results = [];
+			results.push(L.validate($("input.validate7"), {"required": true, "rule": "En_ko_num"}));
+			console.log(JSON.stringify(results));
+		});
+
+		/*
 		$(".table1").eq(0).find("tr").each(function(index){
 			switch(index){
 				case 1:
@@ -75,18 +208,7 @@
 					return $(this).find("td:odd").text(L.datefy('1445562073583', 'mm/dd/YY hh:mi:ss.ms'));
 			}
 		});
-
-		$("button.check").click(function(){
-			var results = [];
-			results.push(L.validate($("input").eq(0), {"rule": "num", "required": true, "minLength": 2, "maxLength": 5, "minValue": 50, "maxValue": 32767}));
-			results.push(L.validate($("input").eq(1), {"rule": "En_ko_num"}));
-			results.push(L.validate($("input").eq(2), {"rule": /[0-9]/g}));
-			var texts = "";
-			for(var i = 0; i < results.length; i++){
-				texts += i === 0 ? JSON.stringify(results[i]) : "\n, " + JSON.stringify(results[i]);
-			}
-			$("td.result").text(texts);
-		});
+		*/
 	</script>
 </body>
 </html>

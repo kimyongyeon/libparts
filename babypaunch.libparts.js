@@ -147,7 +147,7 @@ var L = {
 			, trim: true //앞뒤 공백제거
 			, required: false //필수 여부
 			, alert: true //알림 여부
-			, reset: false //reset 여부
+			, clear: false //clear 여부
 			, replace: false //대체 여부
 			, minLength: null //최소 길이
 			, maxLength: null //최대 길이
@@ -156,61 +156,65 @@ var L = {
 		}; //end: var cfg = {
 
 		var method = {
-			setResult: function(results, $this, $var, type){ //results, 현재 객체, 처리 순서, 처리 분류
+			setResult: function(results, $obj, $var, type){ //results, 현재 객체, 처리 순서, 처리 분류
 				var _msg = cfg.msg[cfg.lang];
 
-				if(type === 0 && cfg.reset){ //reset이 true면
-					$this.val("");
+				if(type === 0 && cfg.clear){ //clear가 true면
+					$obj.val("");
 				}
 
 				if(cfg.alert){ //alert가 true면
 					alert(type === 0 ? _msg[$var] : _msg[$var](cfg[$var]));
 				}
 
-				$this.focus(); //focus를 위치시킴.
+				$obj.focus(); //focus를 위치시킴.
 
-				results.push({$obj: $this, msg: type === 0 ? _msg[$var] : _msg[$var](this[$var]), code: $var});
+				results.push({$obj: $obj, msg: type === 0 ? _msg[$var] : _msg[$var](cfg[$var]), code: $var});
 			}
-			, check: function(results, $this, $var){ //results, 현재 객체, 처리 순서
+			, check: function(results, $obj, $var){ //results, 현재 객체, 처리 순서
 				switch($var){
 					case "required":
 						if(cfg[$var]){ //required가 true이면
-							this.setResult(results, $this, $var, 0);
+							this.setResult(results, $obj, $var, 0);
 						}
 					break;
 					case "minLength":
-						if(cfg[$var] !== null && $this.val().length < cfg[$var]){ //minLength가 값이 있고, 길이가 minLength보다 짧으면
-							this.setResult(results, $this, $var, 1);
+						if(cfg[$var] !== null && $obj.val().length < cfg[$var]){ //minLength가 값이 있고, 길이가 minLength보다 짧으면
+							this.setResult(results, $obj, $var, 1);
 						}
 					break;
 					case "maxLength":
-						if(cfg[$var] !== null && $this.val().length > cfg[$var]){ //maxLength가 값이 있고, 길이가 maxLength보다 길면
-							this.setResult(results, $this, $var, 1);
+						if(cfg[$var] !== null && $obj.val().length > cfg[$var]){ //maxLength가 값이 있고, 길이가 maxLength보다 길면
+							this.setResult(results, $obj, $var, 1);
 						}
 					break;
 					case "minValue":
 						if(cfg[$var] !== null){
-							var _val = $this.val() * 1;
+							var _val = $obj.val() * 1;
 							if(!isNaN(_val) && _val < cfg[$var]){ //minValue가 값이 있고, 크기가 minValue보다 작으면
-								$this.val(cfg[$var]); //최소값으로 초기화
-								this.setResult(results, $this, $var, 1);
+								if(cfg.replace){
+									$obj.val(cfg[$var]); //최소값으로 초기화
+								}
+								this.setResult(results, $obj, $var, 1);
 							}
 						}
 					break;
 					case "maxValue":
 						if(cfg[$var] !== null){
-							var _val = $this.val() * 1;
+							var _val = $obj.val() * 1;
 							if(!isNaN(_val) && _val > cfg[$var]){ //maxValue가 값이 있고, 크기가 maxValue보다 크면
-								$this.val(cfg[$var]); //최대값으로 초기화
-								this.setResult(results, $this, $var, 1);
+								if(cfg.replace){
+									$obj.val(cfg[$var]); //최대값으로 초기화
+								}
+								this.setResult(results, $obj, $var, 1);
 							}
 						}
 					break;
 					default:
-						this.setResult(results, $this, $var, 0);
+						this.setResult(results, $obj, $var, 0);
 					break;
 				} //end: switch($var){
-			} //end: , check: function($this, $var){
+			} //end: , check: function($obj, $var){
 		}; //end: var method = {
 
 		$.extend(cfg, opts);
@@ -228,38 +232,40 @@ var L = {
 				var results = [];
 
 				$obj.each(function(idx){ //동일 객체마다 실행
-					var $this = $(this); //현재 객체
-					var $val = $this.val(); //현재 값
+					var $obj = $(this); //현재 객체
+					var $val = $obj.val(); //현재 값
 
 					if(cfg.trim){ //trim 설정이 true면
-						$this.val($val.trim()); //앞뒤 공백 제거
+						$obj.val($val.trim()); //앞뒤 공백 제거
 					}
-					$val = $this.val(); //공백 제거된 현재 값
+					$val = $obj.val(); //공백 제거된 현재 값
 
 					if($val.length === 0){ //길이가 0이면
-						method.check(results, $this, "required");
+						method.check(results, $obj, "required");
 					}else{ //길이가 0이 아니면
-						method.check(results, $this, "minLength"); //최소길이 체크
-						method.check(results, $this, "maxLength"); //최대길이 체크
-						method.check(results, $this, "minValue"); //최소값 체크
-						method.check(results, $this, "maxValue"); //최대값 체크
+						method.check(results, $obj, "minLength"); //최소길이 체크
+						method.check(results, $obj, "maxLength"); //최대길이 체크
+						method.check(results, $obj, "minValue"); //최소값 체크
+						method.check(results, $obj, "maxValue"); //최대값 체크
 
-						switch($.type(opts.rule)){ //입력받은 rule의 type 비교
-							case "string": //문자열이면
-								$var = opts.rule;
-								if(cfg.regexp[$var].test($val)){
-									method.check(results, $this, $var); //동일한 정규식 체크
-								}
-							break;
-							case "regexp": //정규식이면
-								if(opts.rule.test($val)){
-									method.check(results, $this, "regexp"); //입력받은 정규식 체크
-								}
-							break;
-							default: //기타면
-								method.check(results, $this, "unexpect"); //기대하지 못한 값을 설정
-							break;
-						} //end: switch($.type(opts.rule)){
+						if(cfg.rule !== undefined){
+							switch($.type(cfg.rule)){ //입력받은 rule의 type 비교
+								case "string": //문자열이면
+									$var = cfg.rule;
+									if(cfg.regexp[$var].test($val)){
+										method.check(results, $obj, $var); //동일한 정규식 체크
+									}
+								break;
+								case "regexp": //정규식이면
+									if(cfg.rule.test($val)){
+										method.check(results, $obj, "regexp"); //입력받은 정규식 체크
+									}
+								break;
+								default: //기타면
+									method.check(results, $obj, "unexpect"); //기대하지 못한 값을 설정
+								break;
+							} //end: switch($.type(cfg.rule)){
+						} //end: if(cfg.rule !== undefined){
 					} //end: }else{
 				}); //end: $obj.each(function(idx){
 
@@ -271,9 +277,9 @@ var L = {
 		}
 	} //end: , validate: function($obj, opts, lang){
 	
-	, jsonize: function(map){
+	, jsonize: function(obj){
 		var json = {};
-		var arr = map.replace(/{/gi, "").replace(/}/gi, "").split(",");
+		var arr = obj.replace(/{/gi, "").replace(/}/gi, "").split(",");
 
 		for(var i = 0; i < arr.length; i++){
 			var pair = arr[i].split("=");
@@ -281,5 +287,5 @@ var L = {
 		}
 
 		return json;
-	} //end: , jsonize: function(map){
+	} //end: , jsonize: function(obj){
 }; //end: var L = {
