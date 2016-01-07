@@ -3,15 +3,83 @@
 <head>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 	<style>
 		body {padding: 10px;}
 		pre {text-align: left;}
+		div#left {width: 200px; height: 100%; float: left;}
+		div#left ul {list-style-type: none; padding: 0; margin: 0;}
+		div#left ul li.sub {padding-left: 20px;}
+		div#right {width: calc(100% - 200px); float: right;}
 	</style>
 </head>
 <body>
-	<h1>window static functions</h1>
-	<div>
-		<button class="btn delay">delay() test</button>
+	<div id="left">
+		<ul>
+			<li>
+				<a href="#no1">window static functions</a>
+			</li>
+			<li class="sub">
+				<a href="#delay">delay</a>
+			</li>
+			<li>
+				<a href="#no2">L libraries</a>
+			</li>
+			<li class="sub">
+				<a href="#no2-0">validate0</a>
+			</li>
+			<li class="sub">
+				<a href="#no2-1">validate1</a>
+			</li>
+			<li class="sub">
+				<a href="#no2-2">validate2</a>
+			</li>
+			<li class="sub">
+				<a href="#no2-3">validate3</a>
+			</li>
+			<li class="sub">
+				<a href="#no2-4">validate4</a>
+			</li>
+			<li class="sub">
+				<a href="#no2-5">validate5</a>
+			</li>
+			<li class="sub">
+				<a href="#no2-6">validate6</a>
+			</li>
+			<li class="sub">
+				<a href="#no2-7">validate7</a>
+			</li>
+			<li class="sub">
+				<a href="#no2-8">datefy0</a>
+			</li>
+			<li class="sub">
+				<a href="#no2-9">datefy1</a>
+			</li>
+			<li class="sub">
+				<a href="#no2-10">datefy2</a>
+			</li>
+			<li>
+				<a href="#no3">L.ui</a>
+			</li>
+			<li class="sub">
+				<a href="#no3-1">radio</a>
+			</li>
+			<li class="sub">
+				<a href="#no3-2">checkbox</a>
+			</li>
+			<li class="sub">
+				<a href="#no3-3">file1</a>
+			</li>
+			<li class="sub">
+				<a href="#no3-3">file2</a>
+			</li>
+		</ul>
+	</div>
+
+	<div id="right">
+		<h1 id="no1">window static functions</h1>
+		<div id="delay">
+			<button class="btn delay">delay() test</button>
 <pre class="prettyprint">
 $("button.delay").click(function(){
 	delay(function(){
@@ -19,12 +87,12 @@ $("button.delay").click(function(){
 	}, 2000);
 });
 </pre>
-	</div>
+		</div>
 
-	<h1>L libraries</h1>
-	<div class="validate0">
-		<input type="text" class="validate0" placeholder="must input any texts."/>
-		<button type="button" class="btn btn-sm validate0">validate0</button>
+		<h1 id="no2">L libraries</h1>
+		<div id="no2-0" class="validate0">
+			<input type="text" class="validate0" placeholder="must input any texts."/>
+			<button type="button" class="btn btn-sm validate0">validate0</button>
 <pre class="prettyprint">
 $("button.validate0").click(function(){
 	var results = [];
@@ -32,11 +100,11 @@ $("button.validate0").click(function(){
 	console.log(JSON.stringify(results));
 });
 </pre>
-	</div><!-- /div.validate0 -->
+		</div><!-- /div.validate0 -->
 
-	<div class="validate1">
-		<input type="text" class="validate1" placeholder="must input any texts."/>
-		<button type="button" class="btn btn-sm validate1">validate1</button>
+		<div id="no2-1" class="validate1">
+			<input type="text" class="validate1" placeholder="must input any texts."/>
+			<button type="button" class="btn btn-sm validate1">validate1</button>
 <pre class="prettyprint">
 $("button.validate1").click(function(){
 	var results = [];
@@ -44,11 +112,11 @@ $("button.validate1").click(function(){
 	console.log(JSON.stringify(results));
 });
 </pre>
-	</div><!-- /div.validate1 -->
+		</div><!-- /div.validate1 -->
 
-	<div class="validate2">
-		<input type="text" class="validate2" placeholder="2 <= length && 5 >= length"/>
-		<button type="button" class="btn btn-sm validate2">validate2</button>
+		<div id="no2-2" class="validate2">
+			<input type="text" class="validate2" placeholder="2 <= length && 5 >= length"/>
+			<button type="button" class="btn btn-sm validate2">validate2</button>
 <pre class="prettyprint">
 $("button.validate2").click(function(){
 	var results = [];
@@ -56,11 +124,11 @@ $("button.validate2").click(function(){
 	console.log(JSON.stringify(results));
 });
 </pre>
-	</div><!-- /div.validate2 -->
+		</div><!-- /div.validate2 -->
 
-	<div class="validate3">
-		<input type="text" class="validate3" placeholder="100 <= value && 32767 >= value"/>
-		<button type="button" class="btn btn-sm validate3">validate3</button>
+		<div id="no2-3" class="validate3">
+			<input type="text" class="validate3" placeholder="100 <= value && 32767 >= value"/>
+			<button type="button" class="btn btn-sm validate3">validate3</button>
 <pre class="prettyprint">
 $("button.validate3").click(function(){
 	var results = [];
@@ -68,11 +136,11 @@ $("button.validate3").click(function(){
 	console.log(JSON.stringify(results));
 });
 </pre>
-	</div><!-- /div.validate3 -->
+		</div><!-- /div.validate3 -->
 
-	<div class="validate4">
-		<input type="text" class="validate4" placeholder="0-9"/>
-		<button type="button" class="btn btn-sm validate4">validate4</button>
+		<div id="no2-4" class="validate4">
+			<input type="text" class="validate4" placeholder="0-9"/>
+			<button type="button" class="btn btn-sm validate4">validate4</button>
 <pre class="prettyprint">
 $("button.validate4").click(function(){
 	var results = [];
@@ -80,11 +148,11 @@ $("button.validate4").click(function(){
 	console.log(JSON.stringify(results));
 });
 </pre>
-	</div><!-- /div.validate4 -->
+		</div><!-- /div.validate4 -->
 
-	<div class="validate5">
-		<input type="text" class="validate5" placeholder="a-zA-Z"/>
-		<button type="button" class="btn btn-sm validate5">validate5</button>
+		<div id="no2-5" class="validate5">
+			<input type="text" class="validate5" placeholder="a-zA-Z"/>
+			<button type="button" class="btn btn-sm validate5">validate5</button>
 <pre class="prettyprint">
 $("button.validate5").click(function(){
 	var results = [];
@@ -92,11 +160,11 @@ $("button.validate5").click(function(){
 	console.log(JSON.stringify(results));
 });
 </pre>
-	</div><!-- /div.validate5 -->
+		</div><!-- /div.validate5 -->
 
-	<div class="validate6">
-		<input type="text" class="validate6" placeholder="ㄱ-ㅎㅏ-ㅣ가-힣"/>
-		<button type="button" class="btn btn-sm validate6">validate6</button>
+		<div id="no2-6" class="validate6">
+			<input type="text" class="validate6" placeholder="ㄱ-ㅎㅏ-ㅣ가-힣"/>
+			<button type="button" class="btn btn-sm validate6">validate6</button>
 <pre class="prettyprint">
 $("button.validate6").click(function(){
 	var results = [];
@@ -104,11 +172,11 @@ $("button.validate6").click(function(){
 	console.log(JSON.stringify(results));
 });
 </pre>
-	</div><!-- /div.validate6 -->
+		</div><!-- /div.validate6 -->
 
-	<div class="validate7">
-		<input type="text" class="validate7" placeholder="a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9"/>
-		<button type="button" class="btn btn-sm validate7">validate7</button>
+		<div id="no2-7" class="validate7">
+			<input type="text" class="validate7" placeholder="a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9"/>
+			<button type="button" class="btn btn-sm validate7">validate7</button>
 <pre class="prettyprint">
 $("button.validate7").click(function(){
 	var results = [];
@@ -116,33 +184,78 @@ $("button.validate7").click(function(){
 	console.log(JSON.stringify(results));
 });
 </pre>
-	</div><!-- /div.validate7 -->
-<!--
+		</div><!-- /div.validate7 -->
 
-	<table class="table1">
-		<col>
-		<col style="width: 200px;">
-		<tr><td class="title" colspan="2">L.datefy() sample</td></tr>
-		<tr>
-			<td>1445562073583, 'yyyy.mm.dd hh:mi:ss.ms'</td>
-			<td class="datefy"></td>
-		</tr>
-		<tr>
-			<td>new Date().getTime(), 'MM dd yyyy NN HH:mi:ss'</td>
-			<td class="datefy"></td>
-		</tr>
-		<tr>
-			<td>'1445562073583', 'mm/dd/YY hh:mi:ss.ms'</td>
-			<td class="datefy"></td>
-		</tr>
-	</table>
-	-->
+		<div id="no2-8" class="datefy0">
+			<div id="datefy0"></div>
+<pre class="prettyprint">
+$("#datefy0").text(L.datefy(1445562073583, "yyyy.mm.dd hh:mi:ss.ms"));
+</pre>
+		</div><!-- /div.datefy0 -->
+
+		<div id="no2-9" class="datefy1">
+			<div id="datefy1"></div>
+<pre class="prettyprint">
+$("#datefy1").text(L.datefy(new Date().getTime(), 'MM dd yyyy NN HH:mi:ss'));
+</pre>
+		</div><!-- /div.datefy1 -->
+
+		<div id="no2-10" class="datefy2">
+			<div id="datefy2"></div>
+<pre class="prettyprint">
+$("#datefy2").text(L.datefy('1445562073583', 'mm/dd/YY hh:mi:ss.ms'));
+</pre>
+		</div><!-- /div.datefy2 -->
+
+		<h1 id="no3">L.ui</h1>
+		<div id="no3-0" class="radio">
+			<div id="radio"></div>
+<pre class="prettyprint">
+var arr = [
+	{"name": "tests", "value": "1", "text": "text1"}
+	, {"name": "tests", "value": "2", "text": "text2"}
+	, {"name": "tests", "value": "3", "text": "text3"}
+];
+
+$("#radio").html(L.ui.radio(arr));
+</pre>
+		</div><!-- /div.radio-->
+
+		<div id="no3-1" class="checkbox">
+			<div id="checkbox"></div>
+<pre class="prettyprint">
+var arr = [
+	{"name": "tests", "value": "1", "text": "text1"}
+	, {"name": "tests", "value": "2", "text": "text2"}
+	, {"name": "tests", "value": "3", "text": "text3"}
+];
+
+$("#checkbox").html(L.ui.checkbox(arr));
+</pre>
+		</div><!-- /div.radio-->
+
+		<div id="no3-2" class="file1">
+			<div id="file1"></div>
+<pre class="prettyprint">
+$("#file1").html(L.ui.file({"id": "fileset", "name": "fileset"}));
+</pre>
+		</div><!-- /div.radio-->
+
+		<div id="no3-3" class="file2">
+			<div id="file2"></div>
+<pre class="prettyprint">
+$("#file2").html(L.ui.file({"id": "fileset", "name": "fileset", "isMulti": true}));
+</pre>
+		</div><!-- /div.radio-->
+	</div><!-- /div#right -->
 
 	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=doxy"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
 	<script src="babypaunch.libparts.js"></script>
 	<script>
+		L.ui.floatMenu($("div#left"));
+
 		$("button.delay").click(function(){
 			delay(function(){
 				alert("alert after 2sec");
@@ -197,18 +310,23 @@ $("button.validate7").click(function(){
 			console.log(JSON.stringify(results));
 		});
 
-		/*
-		$(".table1").eq(0).find("tr").each(function(index){
-			switch(index){
-				case 1:
-					return $(this).find("td:odd").text(L.datefy(1445562073583, "yyyy.mm.dd hh:mi:ss.ms"));
-				case 2:
-					return $(this).find("td:odd").text(L.datefy(new Date().getTime(), 'MM dd yyyy NN HH:mi:ss'));
-				case 3:
-					return $(this).find("td:odd").text(L.datefy('1445562073583', 'mm/dd/YY hh:mi:ss.ms'));
-			}
-		});
-		*/
+		$("#datefy0").text(L.datefy(1445562073583, "yyyy.mm.dd hh:mi:ss.ms"));
+		$("#datefy1").text(L.datefy(new Date().getTime(), 'MM dd yyyy NN HH:mi:ss'));
+		$("#datefy2").text(L.datefy('1445562073583', 'mm/dd/YY hh:mi:ss.ms'));
+
+		var arr = [
+			{"name": "tests", "value": "1", "text": "text1"}
+			, {"name": "tests", "value": "2", "text": "text2"}
+			, {"name": "tests", "value": "3", "text": "text3"}
+		];
+
+		$("#radio").html(L.ui.radio(arr));
+
+		$("#checkbox").html(L.ui.checkbox(arr));
+
+		$("#file1").html(L.ui.file({"id": "fileset", "name": "fileset"}));
+
+		$("#file2").html(L.ui.file({"id": "fileset", "name": "fileset", "isMulti": true}));
 	</script>
 </body>
 </html>

@@ -2,8 +2,8 @@
 * javascript libs for share
 * dev: 정대규
 * first: 2015.10.24
-* update: 2015.11.20
-* version: 0.3
+* update: 2016.01.07
+* version: 0.6
 * lisence: MIT(free)
 */
 "use strict";
@@ -12,15 +12,7 @@ window.onerror = function(e){
 	alert(e);
 }
 
-/*
-* delay() 용도: 여러번 실행을 하더라도 정해진 시간 후에 마지막 callback이 한번만 실행됨
-* ex)
-$("#text").keypress(function(){
-delay(function(){
-		alert($("#text").eq(0).val());
-	}, 2000);
-});
-*/
+//delay() 용도: 여러번 실행을 하더라도 정해진 시간 후에 마지막 callback이 한번만 실행됨
 var delay = (function(){
 	var timer = 0;
 	return function(callback, ms){
@@ -39,7 +31,7 @@ String.prototype.pad = function(length){
 var L = {
 	datefy: function(date, format, language){
 		Number.prototype.lPad0 = function(length){
-			return "0".pad(length - this.toString().length) + this;
+			return "0".pad(length - this.toString().length) + this; 
 		} //end: Number.prototype.lPad0 = function(length){
 
 		var language = language === undefined ? "en" : language;
@@ -129,13 +121,13 @@ var L = {
 						return "최소 " + length + "자를 입력하세요.";
 					}
 					, minValue: function(value){
-						return "최소 " + value + "값을 입력하세요.";
+						return "최소값 " + value + "을 입력하세요.";
 					}
 					, maxLength: function(length){
 						return "최대 " + length + "자를 입력할 수 있습니다.";
 					}
 					, maxValue: function(value){
-						return "최대 " + value + "값을 입력할 수 있습니다.";
+						return "최대값 " + value + "을 입력할 수 있습니다.";
 					}
 					, num: "숫자를 입력해주세요."
 					, regexp: "정규식에 알맞은 값을 입력해주세요."
@@ -144,7 +136,6 @@ var L = {
 					, unexpect: " 요구되는 값이 입력되지 않았습니다."
 				} //end: ko: {
 			} //end: , msg: {
-			, trim: true //앞뒤 공백제거
 			, required: false //필수 여부
 			, alert: true //알림 여부
 			, clear: false //clear 여부
@@ -155,56 +146,61 @@ var L = {
 			, maxValue: null //최대값
 		}; //end: var cfg = {
 
-		var method = {
-			setResult: function(results, $obj, $var, type){ //results, 현재 객체, 처리 순서, 처리 분류
-				var _msg = cfg.msg[cfg.lang];
+		var method = { //method group
+			//msgType이 0이면 동일한 msg를 변수 형태로 대입
+			//msgType이 1이면 동일한 msg를 함수로 호출해서 대입
+			setResult: function(results, $obj, $var, msgType){ //results, 현재 객체, 처리 순서, 메세지 타입
+				var _msg = cfg.msg[cfg.lang]; //message group
+				var msgTypeIs0 = msgType === 0; //message type is 0
+				var $msg = msgTypeIs0 ? _msg[$var] : _msg[$var](cfg[$var]);
 
-				if(type === 0 && cfg.clear){ //clear가 true면
+				if(msgTypeIs0 && cfg.clear){ //msgType이 0이고, clear가 true면
 					$obj.val("");
 				}
 
 				if(cfg.alert){ //alert가 true면
-					alert(type === 0 ? _msg[$var] : _msg[$var](cfg[$var]));
+					alert($msg);
 				}
 
 				$obj.focus(); //focus를 위치시킴.
 
-				results.push({$obj: $obj, msg: type === 0 ? _msg[$var] : _msg[$var](cfg[$var]), code: $var});
+				results.push({$obj: $obj, msg: $msg, code: $var});
 			}
 			, check: function(results, $obj, $var){ //results, 현재 객체, 처리 순서
+				var cfg$var = cfg[$var]; //확장된 cfg에 $var로 정의된 값을 참조
 				switch($var){
 					case "required":
-						if(cfg[$var]){ //required가 true이면
+						if(cfg$var){ //required가 true이면
 							this.setResult(results, $obj, $var, 0);
 						}
 					break;
 					case "minLength":
-						if(cfg[$var] !== null && $obj.val().length < cfg[$var]){ //minLength가 값이 있고, 길이가 minLength보다 짧으면
+						if(cfg$var !== null && $obj.val().length < cfg$var){ //minLength가 값이 있고, 길이가 minLength보다 짧으면
 							this.setResult(results, $obj, $var, 1);
 						}
 					break;
 					case "maxLength":
-						if(cfg[$var] !== null && $obj.val().length > cfg[$var]){ //maxLength가 값이 있고, 길이가 maxLength보다 길면
+						if(cfg$var !== null && $obj.val().length > cfg$var){ //maxLength가 값이 있고, 길이가 maxLength보다 길면
 							this.setResult(results, $obj, $var, 1);
 						}
 					break;
 					case "minValue":
-						if(cfg[$var] !== null){
+						if(cfg$var !== null){
 							var _val = $obj.val() * 1;
-							if(!isNaN(_val) && _val < cfg[$var]){ //minValue가 값이 있고, 크기가 minValue보다 작으면
+							if(!isNaN(_val) && _val < cfg$var){ //minValue가 값이 있고, 크기가 minValue보다 작으면
 								if(cfg.replace){
-									$obj.val(cfg[$var]); //최소값으로 초기화
+									$obj.val(cfg$var); //최소값으로 초기화
 								}
 								this.setResult(results, $obj, $var, 1);
 							}
 						}
 					break;
 					case "maxValue":
-						if(cfg[$var] !== null){
+						if(cfg$var !== null){
 							var _val = $obj.val() * 1;
-							if(!isNaN(_val) && _val > cfg[$var]){ //maxValue가 값이 있고, 크기가 maxValue보다 크면
+							if(!isNaN(_val) && _val > cfg$var){ //maxValue가 값이 있고, 크기가 maxValue보다 크면
 								if(cfg.replace){
-									$obj.val(cfg[$var]); //최대값으로 초기화
+									$obj.val(cfg$var); //최대값으로 초기화
 								}
 								this.setResult(results, $obj, $var, 1);
 							}
@@ -233,40 +229,35 @@ var L = {
 
 				$obj.each(function(idx){ //동일 객체마다 실행
 					var $obj = $(this); //현재 객체
-					var $val = $obj.val(); //현재 값
-
-					if(cfg.trim){ //trim 설정이 true면
-						$obj.val($val.trim()); //앞뒤 공백 제거
-					}
-					$val = $obj.val(); //공백 제거된 현재 값
+					var $val = $obj.val().trim(); //앞뒤 공백 제거된 현재 값, trim은 무조건 적용
+					var $rule = cfg.rule; //확장된 cfg의 rule을 참조
 
 					if($val.length === 0){ //길이가 0이면
-						method.check(results, $obj, "required");
-					}else{ //길이가 0이 아니면
+						method.check(results, $obj, "required"); //필수입력 체크
+					}else{
 						method.check(results, $obj, "minLength"); //최소길이 체크
 						method.check(results, $obj, "maxLength"); //최대길이 체크
 						method.check(results, $obj, "minValue"); //최소값 체크
 						method.check(results, $obj, "maxValue"); //최대값 체크
+					}
 
-						if(cfg.rule !== undefined){
-							switch($.type(cfg.rule)){ //입력받은 rule의 type 비교
-								case "string": //문자열이면
-									$var = cfg.rule;
-									if(cfg.regexp[$var].test($val)){
-										method.check(results, $obj, $var); //동일한 정규식 체크
-									}
-								break;
-								case "regexp": //정규식이면
-									if(cfg.rule.test($val)){
-										method.check(results, $obj, "regexp"); //입력받은 정규식 체크
-									}
-								break;
-								default: //기타면
-									method.check(results, $obj, "unexpect"); //기대하지 못한 값을 설정
-								break;
-							} //end: switch($.type(cfg.rule)){
-						} //end: if(cfg.rule !== undefined){
-					} //end: }else{
+					if($rule !== undefined){ //rule이 있으면 설정된 정규식으로 비교한다.
+						switch($.type($rule)){ //입력받은 rule의 type비교
+							case "string": //문자열이면
+								if(cfg.regexp[$rule].test($val)){ //문자열과 동일한 정규식으로 test
+									method.check(results, $obj, $rule);
+								}
+							break;
+							case "regexp": //정규식이면
+								if($rule.test($val)){ //해당 정규식을 직접 입력해서 test
+									method.check(results, $obj, "regexp");
+								}
+							break;
+							default: //기타면, 기대하지 못한 값을 설정
+								method.check(results, $obj, "unexpect");
+							break;
+						} //end: switch($.type($rule)){
+					} //end: if($rule !== undefined){
 				}); //end: $obj.each(function(idx){
 
 				return results;
@@ -277,9 +268,9 @@ var L = {
 		}
 	} //end: , validate: function($obj, opts, lang){
 	
-	, jsonize: function(obj){
+	, jsonize: function(str, separator){
 		var json = {};
-		var arr = obj.replace(/{/gi, "").replace(/}/gi, "").split(",");
+		var arr = str.replace(/{/gi, "").replace(/}/gi, "").split(separator === undefined ? "," : separator);
 
 		for(var i = 0; i < arr.length; i++){
 			var pair = arr[i].split("=");
@@ -287,5 +278,146 @@ var L = {
 		}
 
 		return json;
-	} //end: , jsonize: function(obj){
+	} //end: , jsonize: function(str, separator){
+
+	, sort: function(obj, order){
+		var orders = [order === "dsc" ? ">" : "<" , order === "dsc" ? "<" : ">"];
+		obj.sort(function(a, b){
+			return eval("a.value " + orders[0] + " b.value ? -1 : a.value " + orders[1] + " b.value ? 1 : 0");
+		});
+	} //end: sort: function(obj, order){
+
+	, ui: {
+		select: function(json, option){
+			var str = "";
+			for(var i in json){
+				str += " " + i + "='" + json[i] + "'";
+			}
+			return "<select" + str + ">\n" + (option === undefined ? "" : option) + "</select>\n";
+		} //end: select: function(json, option){
+
+		, option: function(arr, sort){
+			var str = "";
+
+			if(sort){
+				L.sort(arr, sort);
+			}
+
+			for(var i = 0; i < arr.length; i++){
+				var _arr = arr[i];
+				str += "<option value='" + _arr.value + "'>" + _arr.text + "</option>\n";
+			}
+			return str;
+		} //end: , option: function(arr){
+
+		, maxIndex: function(){
+			var result = 0;
+			$("*").each(function(){
+				var $position = $(this).css("position");
+				if($position === "absolute" || $position === "fixed"){
+					var zIndex = $(this).css("z-index") === "auto" ? 1 : parseInt($(this).css('z-index'));
+					if(zIndex > result){
+						result = zIndex;
+					}
+				}
+			});
+			return result;
+		} //end: , maxIndex: function(){
+
+		, floatMenu: function($object, json){
+			var styles = {
+				"position": "fixed"
+				, "z-index": this.maxIndex() + 1
+			};
+			for(var i in json){
+				styles[i] = json[i];
+			}
+
+			$object.css(styles);
+		} //end: , floatMenu: function($object, json){
+
+		, radio: function(arr, json, isIcon){
+			return this.realize("radio", arr, json, isIcon);
+		} //end: , radio: function(arr, json){
+		
+		, checkbox: function(arr, json, isIcon){
+			return this.realize("checkbox", arr, json, isIcon);
+		} //end: , checkbox: function(arr, json){
+
+		, realize: function(type, arr, json, isIcon){
+			var str = "";
+
+			if(type === "radio" || type === "checkbox"){
+				var labelAttrs = "";
+				if(json !== undefined){
+					for(var i in json){
+						labelAttrs += " " + i + "='" + json[i] + "'";
+					}
+				}
+
+				for(var i = 0; i < arr.length; i++){
+					var inputAttrs = "";
+					var text = "";
+					for(var j in arr[i]){
+						if(j === "text"){
+							text = arr[i][j];
+						}else{
+							inputAttrs += " " + j + "='" + arr[i][j] + "'";
+						}
+					}
+
+					if(isIcon){
+						str += "<label" + labelAttrs + ">"
+							+ "<input type='" + type + "'" + inputAttrs + " style='display: none;'/>"
+							//+ "<i class='fa fa-dot-circle-o'></i>"
+							//+ "<i class='fa fa-check-square-o'></i>"
+							+ "<i class='fa fa-" + (type === "radio" ? "circle" : "square") + "-o'></i>"
+							+ text
+						+ "</label>\n";
+					}else{
+						str += "<label" + labelAttrs + "><input type='" + type + "'" + inputAttrs + "/>" + text + "</label>\n";
+					}
+				}
+			} //end: if(type === "radio" || type === "checkbox"){
+
+			return str;
+		} //end: , realize: function(type, arr, json){
+
+		, file: function(json){
+			var attrs = "";
+			for(var i in json){
+				if(i === "true"){
+					attrs += " " + i + "='" + json[i] + "'";
+				}
+			}
+			var jsonString = JSON.stringify(json);
+
+			var str = "<div style='position: relative; margin-bottom: 5px;'>\n";
+			str += "<input type='file'" + attrs + " style='display: none;' onchange='L.ui.changeFile(this, " + jsonString + ")'/>\n";
+			str += "<input type='text' readonly='readonly' style='width: 100%;'/>\n";
+			str += "<i class='fa fa-times' style='position: absolute; top: 6px; right: 5px; display: none;' onclick='L.ui.removeFile(this, " + jsonString + ")'></i>\n";
+			str += "<i class='fa fa-file' style='position: absolute; top: 6px; right: 5px;' onclick='L.ui.clickFile(this)'></i>\n";
+			str += "</div>\n";
+			return str;
+		} //end: , file: function(json){
+
+		, clickFile: function(obj){
+			$(obj).parent().find("input[type='file']").trigger("click");
+		} //end: , clickFile: function(obj){
+
+		, changeFile: function(obj, jsonString){
+			var $val = $(obj).val();
+			var fileName = $val.substring($val.lastIndexOf("\\") + 1, $val.length);
+			var $parent = $(obj).parent();
+			$parent.find("input[type='text']").val(fileName).end().find("i.fa-file").hide().end().find("i.fa-times").show();
+
+			if(jsonString.isMulti){
+				$parent.parent().append(this.file(jsonString));
+			}
+		} //end: , changeFile: function(obj, jsonString){
+
+		, removeFile: function(obj, jsonString){
+			jsonString.isMulti ? $(obj).parent().remove() : $(obj).parent().parent().html(this.file(jsonString));
+		} //end: , removeFile: function(obj, jsonString){
+	} //end: , ui: {
 }; //end: var L = {
