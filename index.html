@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1">
+    <title>INDEX</title>
+    
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-	<style>
+    <style>
 		body {padding: 10px;}
 		pre {text-align: left;}
 		div#left {width: 200px; height: 100%; float: left;}
 		div#left ul {list-style-type: none; padding: 0; margin: 0;}
 		div#left ul li.sub {padding-left: 20px;}
 		div#right {width: calc(100% - 200px); float: right;}
-	</style>
+    </style>
 </head>
 <body>
 	<div id="left">
@@ -26,62 +31,68 @@
 				<a href="#no2">L libraries</a>
 			</li>
 			<li class="sub">
-				<a href="#no2-0">validate0</a>
+				<a href="#validate0">validate0</a>
 			</li>
 			<li class="sub">
-				<a href="#no2-1">validate1</a>
+				<a href="#validate1">validate1</a>
 			</li>
 			<li class="sub">
-				<a href="#no2-2">validate2</a>
+				<a href="#validate2">validate2</a>
 			</li>
 			<li class="sub">
-				<a href="#no2-3">validate3</a>
+				<a href="#validate3">validate3</a>
 			</li>
 			<li class="sub">
-				<a href="#no2-4">validate4</a>
+				<a href="#validate4">validate4</a>
 			</li>
 			<li class="sub">
-				<a href="#no2-5">validate5</a>
+				<a href="#validate5">validate5</a>
 			</li>
 			<li class="sub">
-				<a href="#no2-6">validate6</a>
+				<a href="#validate6">validate6</a>
 			</li>
 			<li class="sub">
-				<a href="#no2-7">validate7</a>
+				<a href="#validate7">validate7</a>
 			</li>
 			<li class="sub">
-				<a href="#no2-8">datefy0</a>
+				<a href="#datefy0">datefy0</a>
 			</li>
 			<li class="sub">
-				<a href="#no2-9">datefy1</a>
+				<a href="#datefy1">datefy1</a>
 			</li>
 			<li class="sub">
-				<a href="#no2-10">datefy2</a>
+				<a href="#datefy2">datefy2</a>
 			</li>
 			<li>
 				<a href="#no3">L.ui</a>
 			</li>
 			<li class="sub">
-				<a href="#no3-1">radio</a>
+				<a href="#radio1">radio1</a>
 			</li>
 			<li class="sub">
-				<a href="#no3-2">checkbox</a>
+				<a href="#radio2">radio2</a>
 			</li>
 			<li class="sub">
-				<a href="#no3-3">file1</a>
+				<a href="#checkbox1">checkbox1</a>
 			</li>
 			<li class="sub">
-				<a href="#no3-3">file2</a>
+				<a href="#checkbox2">checkbox2</a>
+			</li>
+			<li class="sub">
+				<a href="#file1">file1</a>
+			</li>
+			<li class="sub">
+				<a href="#file2">file2</a>
 			</li>
 		</ul>
 	</div>
 
 	<div id="right">
 		<h1 id="no1">window static functions</h1>
-		<div id="delay">
-			<button class="btn delay">delay() test</button>
+		<div>
+			<button id="delay" class="btn">delay()</button>
 <pre class="prettyprint">
-$("button.delay").click(function(){
+$("#delay").click(function(){
 	delay(function(){
 		alert("alert after 2sec");
 	}, 2000);
@@ -90,126 +101,126 @@ $("button.delay").click(function(){
 		</div>
 
 		<h1 id="no2">L libraries</h1>
-		<div id="no2-0" class="validate0">
+		<div>
 			<input type="text" class="validate0" placeholder="must input any texts."/>
-			<button type="button" class="btn btn-sm validate0">validate0</button>
+			<button type="button" id="validate0" class="btn btn-sm">validate0</button>
 <pre class="prettyprint">
-$("button.validate0").click(function(){
+$("#validate0").click(function(){
 	var results = [];
 	results.push(L.validate($("input.validate0"), {"required": true}));
 	console.log(JSON.stringify(results));
 });
 </pre>
-		</div><!-- /div.validate0 -->
+		</div>
 
-		<div id="no2-1" class="validate1">
+		<div>
 			<input type="text" class="validate1" placeholder="must input any texts."/>
-			<button type="button" class="btn btn-sm validate1">validate1</button>
+			<button type="button" id="validate1" class="btn btn-sm">validate1</button>
 <pre class="prettyprint">
-$("button.validate1").click(function(){
+$("#validate1").click(function(){
 	var results = [];
 	results.push(L.validate($("input.validate1"), {"required": true, "alert": false}));
 	console.log(JSON.stringify(results));
 });
 </pre>
-		</div><!-- /div.validate1 -->
+		</div>
 
-		<div id="no2-2" class="validate2">
+		<div>
 			<input type="text" class="validate2" placeholder="2 <= length && 5 >= length"/>
-			<button type="button" class="btn btn-sm validate2">validate2</button>
+			<button type="button" id="validate2" class="btn btn-sm">validate2</button>
 <pre class="prettyprint">
-$("button.validate2").click(function(){
+$("#validate2").click(function(){
 	var results = [];
 	results.push(L.validate($("input.validate2"), {"required": true, "minLength": 2, "maxLength": 5}));
 	console.log(JSON.stringify(results));
 });
 </pre>
-		</div><!-- /div.validate2 -->
+		</div>
 
-		<div id="no2-3" class="validate3">
+		<div>
 			<input type="text" class="validate3" placeholder="100 <= value && 32767 >= value"/>
-			<button type="button" class="btn btn-sm validate3">validate3</button>
+			<button type="button" id="validate3" class="btn btn-sm">validate3</button>
 <pre class="prettyprint">
-$("button.validate3").click(function(){
+$("#validate3").click(function(){
 	var results = [];
 	results.push(L.validate($("input.validate3"), {"required": true, "minValue": 100, "maxValue": 32767}));
 	console.log(JSON.stringify(results));
 });
 </pre>
-		</div><!-- /div.validate3 -->
+		</div>
 
-		<div id="no2-4" class="validate4">
+		<div>
 			<input type="text" class="validate4" placeholder="0-9"/>
-			<button type="button" class="btn btn-sm validate4">validate4</button>
+			<button type="button" id="validate4" class="btn btn-sm">validate4</button>
 <pre class="prettyprint">
-$("button.validate4").click(function(){
+$("#validate4").click(function(){
 	var results = [];
 	results.push(L.validate($("input.validate4"), {"required": true, "rule": "num"}));
 	console.log(JSON.stringify(results));
 });
 </pre>
-		</div><!-- /div.validate4 -->
+		</div>
 
-		<div id="no2-5" class="validate5">
+		<div>
 			<input type="text" class="validate5" placeholder="a-zA-Z"/>
-			<button type="button" class="btn btn-sm validate5">validate5</button>
+			<button type="button" id="validate5" class="btn btn-sm">validate5</button>
 <pre class="prettyprint">
-$("button.validate5").click(function(){
+$("#validate5").click(function(){
 	var results = [];
 	results.push(L.validate($("input.validate5"), {"required": true, "rule": "En"}));
 	console.log(JSON.stringify(results));
 });
 </pre>
-		</div><!-- /div.validate5 -->
+		</div>
 
-		<div id="no2-6" class="validate6">
+		<div>
 			<input type="text" class="validate6" placeholder="ㄱ-ㅎㅏ-ㅣ가-힣"/>
-			<button type="button" class="btn btn-sm validate6">validate6</button>
+			<button type="button" id="validate6" class="btn btn-sm">validate6</button>
 <pre class="prettyprint">
-$("button.validate6").click(function(){
+$("#validate6").click(function(){
 	var results = [];
 	results.push(L.validate($("input.validate6"), {"required": true, "rule": "ko"}));
 	console.log(JSON.stringify(results));
 });
 </pre>
-		</div><!-- /div.validate6 -->
+		</div>
 
-		<div id="no2-7" class="validate7">
+		<div>
 			<input type="text" class="validate7" placeholder="a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣0-9"/>
-			<button type="button" class="btn btn-sm validate7">validate7</button>
+			<button type="button" id="validate7" class="btn btn-sm">validate7</button>
 <pre class="prettyprint">
-$("button.validate7").click(function(){
+$("#validate7").click(function(){
 	var results = [];
 	results.push(L.validate($("input.validate7"), {"required": true, "rule": "En_ko_num"}));
 	console.log(JSON.stringify(results));
 });
 </pre>
-		</div><!-- /div.validate7 -->
+		</div>
 
-		<div id="no2-8" class="datefy0">
+		<div>
 			<div id="datefy0"></div>
 <pre class="prettyprint">
 $("#datefy0").text(L.datefy(1445562073583, "yyyy.mm.dd hh:mi:ss.ms"));
 </pre>
-		</div><!-- /div.datefy0 -->
+		</div>
 
-		<div id="no2-9" class="datefy1">
+		<div>
 			<div id="datefy1"></div>
 <pre class="prettyprint">
 $("#datefy1").text(L.datefy(new Date().getTime(), 'MM dd yyyy NN HH:mi:ss'));
 </pre>
-		</div><!-- /div.datefy1 -->
+		</div>
 
-		<div id="no2-10" class="datefy2">
+		<div>
 			<div id="datefy2"></div>
 <pre class="prettyprint">
 $("#datefy2").text(L.datefy('1445562073583', 'mm/dd/YY hh:mi:ss.ms'));
 </pre>
-		</div><!-- /div.datefy2 -->
+		</div>
 
 		<h1 id="no3">L.ui</h1>
-		<div id="no3-0" class="radio">
-			<div id="radio"></div>
+		<div>
+			<div id="radio1"></div>
 <pre class="prettyprint">
 var arr = [
 	{"name": "tests", "value": "1", "text": "text1"}
@@ -217,12 +228,25 @@ var arr = [
 	, {"name": "tests", "value": "3", "text": "text3"}
 ];
 
-$("#radio").html(L.ui.radio(arr));
+$("#radio1").html(L.ui.radio(arr));
 </pre>
-		</div><!-- /div.radio-->
+		</div>
 
-		<div id="no3-1" class="checkbox">
-			<div id="checkbox"></div>
+		<div>
+			<div id="radio2"></div>
+<pre class="prettyprint">
+var arr = [
+	{"name": "tests", "value": "1", "text": "text1"}
+	, {"name": "tests", "value": "2", "text": "text2"}
+	, {"name": "tests", "value": "3", "text": "text3"}
+];
+
+$("#radio2").html(L.ui.radio(arr, {}, true));
+</pre>
+		</div>
+
+		<div>
+			<div id="checkbox1"></div>
 <pre class="prettyprint">
 var arr = [
 	{"name": "tests", "value": "1", "text": "text1"}
@@ -232,79 +256,93 @@ var arr = [
 
 $("#checkbox").html(L.ui.checkbox(arr));
 </pre>
-		</div><!-- /div.radio-->
+		</div>
 
-		<div id="no3-2" class="file1">
+		<div>
+			<div id="checkbox2"></div>
+<pre class="prettyprint">
+var arr = [
+	{"name": "tests", "value": "1", "text": "text1"}
+	, {"name": "tests", "value": "2", "text": "text2"}
+	, {"name": "tests", "value": "3", "text": "text3"}
+];
+
+$("#checkbox").html(L.ui.checkbox(arr, {}, true));
+</pre>
+		</div>
+
+		<div>
 			<div id="file1"></div>
 <pre class="prettyprint">
 $("#file1").html(L.ui.file({"id": "fileset", "name": "fileset"}));
 </pre>
-		</div><!-- /div.radio-->
+		</div>
 
-		<div id="no3-3" class="file2">
+		<div>
 			<div id="file2"></div>
 <pre class="prettyprint">
 $("#file2").html(L.ui.file({"id": "fileset", "name": "fileset", "isMulti": true}));
 </pre>
-		</div><!-- /div.radio-->
+		</div>
 	</div><!-- /div#right -->
 
+    <script src="http://underscorejs.org/underscore-min.js"></script>
 	<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js?skin=doxy"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script src="babypaunch.libparts.js"></script>
 	<script>
 		L.ui.floatMenu($("div#left"));
 
-		$("button.delay").click(function(){
+		$("#delay").click(function(){
 			delay(function(){
 				alert("alert after 2sec");
 			}, 2000);
 		});
 
-		$("button.validate0").click(function(){
+		$("#validate0").click(function(){
 			var results = [];
 			results.push(L.validate($("input.validate0"), {"required": true}));
 			console.log(JSON.stringify(results));
 		});
 
-		$("button.validate1").click(function(){
+		$("#validate1").click(function(){
 			var results = [];
 			results.push(L.validate($("input.validate1"), {"required": true, "alert": false}));
 			console.log(JSON.stringify(results));
 		});
 
-		$("button.validate2").click(function(){
+		$("#validate2").click(function(){
 			var results = [];
 			results.push(L.validate($("input.validate2"), {"required": true, "minLength": 2, "maxLength": 5}));
 			console.log(JSON.stringify(results));
 		});
 
-		$("button.validate3").click(function(){
+		$("#validate3").click(function(){
 			var results = [];
 			results.push(L.validate($("input.validate3"), {"required": true, "minValue": 100, "maxValue": 32767}));
 			console.log(JSON.stringify(results));
 		});
 
-		$("button.validate4").click(function(){
+		$("#validate4").click(function(){
 			var results = [];
 			results.push(L.validate($("input.validate4"), {"required": true, "rule": "num"}));
 			console.log(JSON.stringify(results));
 		});
 
-		$("button.validate5").click(function(){
+		$("#validate5").click(function(){
 			var results = [];
 			results.push(L.validate($("input.validate5"), {"required": true, "rule": "En"}));
 			console.log(JSON.stringify(results));
 		});
 
-		$("button.validate6").click(function(){
+		$("#validate6").click(function(){
 			var results = [];
 			results.push(L.validate($("input.validate6"), {"required": true, "rule": "ko"}));
 			console.log(JSON.stringify(results));
 		});
 
-		$("button.validate7").click(function(){
+		$("#validate7").click(function(){
 			var results = [];
 			results.push(L.validate($("input.validate7"), {"required": true, "rule": "En_ko_num"}));
 			console.log(JSON.stringify(results));
@@ -320,13 +358,61 @@ $("#file2").html(L.ui.file({"id": "fileset", "name": "fileset", "isMulti": true}
 			, {"name": "tests", "value": "3", "text": "text3"}
 		];
 
-		$("#radio").html(L.ui.radio(arr));
+		$("#radio1").html(L.ui.radio(arr));
 
-		$("#checkbox").html(L.ui.checkbox(arr));
+		$("#radio2").html(L.ui.radio(arr, {}, true));
+
+		$("#checkbox1").html(L.ui.checkbox(arr));
+
+		$("#checkbox2").html(L.ui.checkbox(arr, {}, true));
 
 		$("#file1").html(L.ui.file({"id": "fileset", "name": "fileset"}));
 
 		$("#file2").html(L.ui.file({"id": "fileset", "name": "fileset", "isMulti": true}));
+
+		/*
+		$("#testClick").click(function(){
+			L.locate("http://www.naver.com", {"a": 1, "b": 2}, {"passParams": {"c": 3, "d": 4}}
+				, function(xhr, status, response, params){
+					console.log(xhr);
+					console.log(status);
+					console.log(response);
+					console.log(params);
+				}
+				, function(xhr, status, error, params){
+					console.log(xhr);
+					console.log(status);
+					console.log(error);
+					console.log(params);
+
+					$("div[data-layered]").click(function(){
+						L.ui.close();
+					});
+				}
+			);
+		});
+
+		console.log(L.serialize({"a": "1", "b": "2", "c": "3"}, "=", ","));
+
+		var cols = [
+			{"text": "#", "name": "no", "width": "50px"}
+			, {"text": "c", "name": "c", "width": "100px"}
+			, {"text": "col1", "name": "col1", "width": "200px"}
+			, {"text": "col2", "name": "col2", "width": "100px"}
+			, {"text": "", "name": "space", "width": "100px"}
+			, {"text": "last", "name": "last", "width": "200px"}
+		];
+
+		//cols와 match되지 않는 정보들은 묶어서 JSON.stringify()후 data-attr로 대입
+		var rows = [
+			{"no": "1", "c": "c", "col1": "row1-1", "col2": "row1-2", "space": "A", "last": "1111"}
+			, {"no": "2", "c": "c", "col1": "row2-1", "col2": "row2-2", "space": "B", "last": "2222"}
+			, {"no": "3", "c": "c", "col1": "row3-1", "col2": "row3-2", "space": "C", "last": "3333"}
+		];
+
+		$("#temp").html(L.ui.table(cols, rows));
+
+		*/
 	</script>
 </body>
 </html>

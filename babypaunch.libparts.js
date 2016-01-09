@@ -82,9 +82,6 @@ var L = {
 		}); //end: return format.replace(/(yyyy|YY|mm|MM|dd|WW|hh|NN|HH|mi|ss|ms)/gi, function(pattern){
 	} //end: datefy: function(date, format, language){
 
-	/*
-	* validate
-	*/
 	, validate: function($obj, opts, lang){
 		var cfg = {
 			lang: "ko" //언어설정
@@ -267,6 +264,19 @@ var L = {
 			return {msg: _msg.exception, code: "exception"};
 		}
 	} //end: , validate: function($obj, opts, lang){
+
+	, serialize: function(json, concat, separator, excepts){
+		var str = "";
+		for(var keys = Object.keys(json), i = 0; i < keys.length; i++){
+			var key = keys[i];
+			for(var j = 0; j < excepts.length; j++){
+				if(excepts[j] !== key){
+					str += key + (concat === undefined ? "=" : concat) + json[key] + (i + 1 === keys.length ? "" : (separator === undefined ? "&" : separator));
+				}
+			}
+		}
+		return str;
+	} //end: , serialize: function(json, concat, separator, excepts){
 	
 	, jsonize: function(str, separator){
 		var json = {};
@@ -286,6 +296,46 @@ var L = {
 			return eval("a.value " + orders[0] + " b.value ? -1 : a.value " + orders[1] + " b.value ? 1 : 0");
 		});
 	} //end: sort: function(obj, order){
+
+	, cap: function(str){
+		return str.charAt(0).toUpperCase() + str.slice(1);
+	} //end: , cap: function(str){
+
+	, locate: function(url, params, options, successCallback, failCallback){
+		var defaults = {
+			"type": "post"
+			, "block": true
+			, "blockStyle": {
+				"position": "absolute"
+				, "top": 0
+				, "left": 0
+				, "width": "100%"
+				, "height": "100%"
+				, "background": "rgba(0,0,0,0.1)"
+				, "text-align": "center"
+				, "z-index": 9999
+			}
+			, "img": "<img src='ajax-loader.gif' style='position: relative; top: 50%;'/>"
+			, "passParams": {}
+		};
+		$.extend(true, defaults, options);
+
+		if(defaults.block){
+			$("body").append(L.ui.modal(defaults.blockStyle, defaults.img));
+		}
+
+		$[defaults.type](url, params, function(result, status, xhr){
+			L.ui.close();
+			if(successCallback !== undefined){
+				successCallback(result, status, xhr, defaults.passParams);
+			}
+		})
+		.fail(function(xhr, status, error){ 
+			if(failCallback !== undefined){
+				failCallback(xhr, status, error, defaults.passParams);
+			}
+		});
+	} //end: , locate: function(url, params, options, successCallback, failCallback){
 
 	, ui: {
 		select: function(json, option){
@@ -368,10 +418,9 @@ var L = {
 
 					if(isIcon){
 						str += "<label" + labelAttrs + ">"
-							+ "<input type='" + type + "'" + inputAttrs + " style='display: none;'/>"
-							//+ "<i class='fa fa-dot-circle-o'></i>"
-							//+ "<i class='fa fa-check-square-o'></i>"
-							+ "<i class='fa fa-" + (type === "radio" ? "circle" : "square") + "-o'></i>"
+							+ "<input type='" + type + "'" + inputAttrs + " style='display: none;' onclick='L.ui.click" + L.cap(type) + "(this)'/>"
+							+ "<i class='fa fa-" + (type === "radio" ? "circle" : "square") + "-o' style='color: gray'></i>"
+							+ "<i class='fa fa-" + (type === "radio" ? "dot-circle" : "check-square") + "-o' style='display: none; color: blue;'></i>"
 							+ text
 						+ "</label>\n";
 					}else{
@@ -382,6 +431,18 @@ var L = {
 
 			return str;
 		} //end: , realize: function(type, arr, json){
+
+		, clickRadio: function(obj){
+			var $parent = $(obj).parent();
+			$parent.parent().find("i:odd").hide().end().find("i:even").show();
+			$parent.find("i:even").hide().end().find("i:odd").show();
+		} //end: , clickRadio: function(obj){
+
+		, clickCheckbox: function(obj){
+			var $parent = $(obj).parent();
+			var toggles = $(obj).prop("checked") ? ["hide", "show"] : ["show", "hide"];
+			$parent.find("i:even")[toggles[0]]().end().find("i:odd")[toggles[1]]();
+		} //end: , clickCheckbox: function(obj){
 
 		, file: function(json){
 			var attrs = "";
@@ -419,5 +480,41 @@ var L = {
 		, removeFile: function(obj, jsonString){
 			jsonString.isMulti ? $(obj).parent().remove() : $(obj).parent().parent().html(this.file(jsonString));
 		} //end: , removeFile: function(obj, jsonString){
+
+		, modal: function(json, str){
+			return "<div data-layered style='" + L.serialize(json, ":", ";") + "'>" + str + "</div>";
+		} //end: , modal: function(json, str){
+		, close: function(){
+			$("div[data-layered]").remove();
+		} //end: , close: function(){
+
+		, table: function(head, body){
+			var ths = "";
+			for(var i = 0; i < head.length; i++){
+				var thStyle = {
+					"border": "0px solid silver"
+					, "background": "silver"
+					, "color": "white"
+				};
+				$.extend(true, head[i], thStyle);
+
+				//ths += "<th data-th-name='" + head[i].name + "' style='" + L.serialize(head[i], ":", ";", ["text", "name"]) + "'>" + head[i].text + "</th>";
+				ths += "<th data-th-name='" + head[i].name + "' style='" + L.serialize(head[i], ":", ";", ["text"]) + "'>" + head[i].text + "</th>";
+			}
+
+			var trs = "";
+			for(var i = 0; i < body.length; i++){
+				var tds = "";
+				for(var j in body[i]){
+					tds += "<td>" + body[i][j] + "</td>";
+				}
+				trs += "<tr style='" + (i % 2 === 0 ? "" : "background: #eee") + "'>" + tds + "</tr>";
+			}
+
+			return "<table style='table-layout: fixed;'>"
+				+ "<thead><tr>" + ths + "</tr></thead>"
+				+ "<tbody>" + trs + "</tbody>"
+			+ "</table>";
+		} //end: table: function(head, body){
 	} //end: , ui: {
 }; //end: var L = {
