@@ -269,9 +269,12 @@ var L = {
 		var str = "";
 		for(var keys = Object.keys(json), i = 0; i < keys.length; i++){
 			var key = keys[i];
-			for(var j = 0; j < excepts.length; j++){
-				if(excepts[j] !== key){
-					str += key + (concat === undefined ? "=" : concat) + json[key] + (i + 1 === keys.length ? "" : (separator === undefined ? "&" : separator));
+
+			if(excepts !== undefined){
+				for(var j = 0; j < excepts.length; j++){
+					if(excepts[j] !== key){
+						str += key + (concat === undefined ? "=" : concat) + json[key] + (i + 1 === keys.length ? "" : (separator === undefined ? "&" : separator));
+					}
 				}
 			}
 		}

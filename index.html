@@ -63,6 +63,9 @@
 			<li class="sub">
 				<a href="#datefy2">datefy2</a>
 			</li>
+			<li class="sub">
+				<a href="#locate">locate</a>
+			</li>
 			<li>
 				<a href="#no3">L.ui</a>
 			</li>
@@ -218,6 +221,33 @@ $("#datefy2").text(L.datefy('1445562073583', 'mm/dd/YY hh:mi:ss.ms'));
 </pre>
 		</div>
 
+		<div>
+			<button type="button" id="locate" class="btn btn-sm">locate</button>
+<pre class="prettyprint">
+$("#locate").click(function(){
+	var url = "https://raw.githubusercontent.com/babypaunch/libparts/master/test_data.json"
+	L.locate(url, {"a": 1, "b": 2}, {"passParams": {"c": 3, "d": 4}}
+		, function(xhr, status, response, params){
+			console.log(xhr);
+			console.log(status);
+			console.log(response);
+			console.log(params);
+		}
+		, function(xhr, status, error, params){
+			console.log(xhr);
+			console.log(status);
+			console.log(error);
+			console.log(params);
+
+			$("div[data-layered]").click(function(){
+				L.ui.close();
+			});
+		}
+	);
+});
+</pre>
+		</div>
+
 		<h1 id="no3">L.ui</h1>
 		<div>
 			<div id="radio1"></div>
@@ -370,9 +400,9 @@ $("#file2").html(L.ui.file({"id": "fileset", "name": "fileset", "isMulti": true}
 
 		$("#file2").html(L.ui.file({"id": "fileset", "name": "fileset", "isMulti": true}));
 
-		/*
-		$("#testClick").click(function(){
-			L.locate("http://www.naver.com", {"a": 1, "b": 2}, {"passParams": {"c": 3, "d": 4}}
+		$("#locate").click(function(){
+			var url = "https://raw.githubusercontent.com/babypaunch/libparts/master/test_data.json"
+			L.locate(url, {"a": 1, "b": 2}, {"passParams": {"c": 3, "d": 4}}
 				, function(xhr, status, response, params){
 					console.log(xhr);
 					console.log(status);
@@ -392,6 +422,7 @@ $("#file2").html(L.ui.file({"id": "fileset", "name": "fileset", "isMulti": true}
 			);
 		});
 
+		/*
 		console.log(L.serialize({"a": "1", "b": "2", "c": "3"}, "=", ","));
 
 		var cols = [
