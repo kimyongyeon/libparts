@@ -64,7 +64,10 @@
 				<a href="#datefy2">datefy2</a>
 			</li>
 			<li class="sub">
-				<a href="#locate">locate</a>
+				<a href="#locate1">locate1</a>
+			</li>
+			<li class="sub">
+				<a href="#locate2">locate2</a>
 			</li>
 			<li>
 				<a href="#no3">L.ui</a>
@@ -222,22 +225,49 @@ $("#datefy2").text(L.datefy('1445562073583', 'mm/dd/YY hh:mi:ss.ms'));
 		</div>
 
 		<div>
-			<button type="button" id="locate" class="btn btn-sm">locate</button>
+			<button type="button" id="locate1" class="btn btn-sm">locate1</button>
 <pre class="prettyprint">
-$("#locate").click(function(){
+$("#locate1").click(function(){
 	var url = "https://raw.githubusercontent.com/babypaunch/libparts/master/test_data.json"
 	L.locate(url, {"a": 1, "b": 2}, {"passParams": {"c": 3, "d": 4}}
 		, function(xhr, status, response, params){
-			console.log(xhr);
-			console.log(status);
-			console.log(response);
-			console.log(params);
+			alert("xhr: " + JSON.stringify(xhr));
+			alert("status: " + status);
+			alert("response: " + JSON.stringify(response));
+			alert("params: " + JSON.stringify(params));
 		}
 		, function(xhr, status, error, params){
-			console.log(xhr);
-			console.log(status);
-			console.log(error);
-			console.log(params);
+			alert("xhr: " + JSON.stringify(xhr));
+			alert("status: " + status);
+			alert("error: " + error);
+			alert("params: " + JSON.stringify(params));
+
+			$("div[data-layered]").click(function(){
+				L.ui.close();
+			});
+		}
+	);
+});
+</pre>
+		</div>
+
+		<div>
+			<button type="button" id="locate2" class="btn btn-sm">locate2</button>
+<pre class="prettyprint">
+$("#locate2").click(function(){
+	var url = "http://www.test.com"
+	L.locate(url, {"a": 1, "b": 2}, {"passParams": {"c": 3, "d": 4}}
+		, function(xhr, status, response, params){
+			alert("xhr: " + JSON.stringify(xhr));
+			alert("status: " + status);
+			alert("response: " + JSON.stringify(response));
+			alert("params: " + JSON.stringify(params));
+		}
+		, function(xhr, status, error, params){
+			alert("xhr: " + JSON.stringify(xhr));
+			alert("status: " + status);
+			alert("error: " + error);
+			alert("params: " + JSON.stringify(params));
 
 			$("div[data-layered]").click(function(){
 				L.ui.close();
@@ -400,20 +430,42 @@ $("#file2").html(L.ui.file({"id": "fileset", "name": "fileset", "isMulti": true}
 
 		$("#file2").html(L.ui.file({"id": "fileset", "name": "fileset", "isMulti": true}));
 
-		$("#locate").click(function(){
+		$("#locate1").click(function(){
 			var url = "https://raw.githubusercontent.com/babypaunch/libparts/master/test_data.json"
 			L.locate(url, {"a": 1, "b": 2}, {"passParams": {"c": 3, "d": 4}}
 				, function(xhr, status, response, params){
-					console.log(xhr);
-					console.log(status);
-					console.log(response);
-					console.log(params);
+					alert("xhr: " + JSON.stringify(xhr));
+					alert("status: " + status);
+					alert("response: " + JSON.stringify(response));
+					alert("params: " + JSON.stringify(params));
 				}
 				, function(xhr, status, error, params){
-					console.log(xhr);
-					console.log(status);
-					console.log(error);
-					console.log(params);
+					alert("xhr: " + JSON.stringify(xhr));
+					alert("status: " + status);
+					alert("error: " + error);
+					alert("params: " + JSON.stringify(params));
+
+					$("div[data-layered]").click(function(){
+						L.ui.close();
+					});
+				}
+			);
+		});
+
+		$("#locate2").click(function(){
+			var url = "http://www.test.com"
+			L.locate(url, {"a": 1, "b": 2}, {"passParams": {"c": 3, "d": 4}}
+				, function(xhr, status, response, params){
+					alert("xhr: " + JSON.stringify(xhr));
+					alert("status: " + status);
+					alert("response: " + JSON.stringify(response));
+					alert("params: " + JSON.stringify(params));
+				}
+				, function(xhr, status, error, params){
+					alert("xhr: " + JSON.stringify(xhr));
+					alert("status: " + status);
+					alert("error: " + error);
+					alert("params: " + JSON.stringify(params));
 
 					$("div[data-layered]").click(function(){
 						L.ui.close();

@@ -211,7 +211,6 @@ var L = {
 		}; //end: var method = {
 
 		$.extend(cfg, opts);
-		//console.log(JSON.stringify(cfg));
 
 		try{
 			var _msg = cfg.msg[cfg.lang];
@@ -276,6 +275,8 @@ var L = {
 						str += key + (concat === undefined ? "=" : concat) + json[key] + (i + 1 === keys.length ? "" : (separator === undefined ? "&" : separator));
 					}
 				}
+			}else{
+				str += key + (concat === undefined ? "=" : concat) + json[key] + (i + 1 === keys.length ? "" : (separator === undefined ? "&" : separator));
 			}
 		}
 		return str;
@@ -309,12 +310,12 @@ var L = {
 			"type": "post"
 			, "block": true
 			, "blockStyle": {
-				"position": "absolute"
+				"position": "fixed"
 				, "top": 0
 				, "left": 0
 				, "width": "100%"
 				, "height": "100%"
-				, "background": "rgba(0,0,0,0.1)"
+				, "background": "rgba(0,0,0,0.5)"
 				, "text-align": "center"
 				, "z-index": 9999
 			}
