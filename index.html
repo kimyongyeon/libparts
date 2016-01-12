@@ -230,20 +230,13 @@ $("#datefy2").text(L.datefy('1445562073583', 'mm/dd/YY hh:mi:ss.ms'));
 $("#locate1").click(function(){
 	var url = "https://raw.githubusercontent.com/babypaunch/libparts/master/test_data.json"
 	L.locate(url, {"a": 1, "b": 2}, {"passParams": {"c": 3, "d": 4}}
-		, function(xhr, status, response, params){
-			alert("xhr: " + JSON.stringify(xhr));
-			alert("status: " + status);
-			alert("response: " + JSON.stringify(response));
-			alert("params: " + JSON.stringify(params));
+		, function(jsonString){
+			console.log(jsonString);
 		}
-		, function(xhr, status, error, params){
-			alert("xhr: " + JSON.stringify(xhr));
-			alert("status: " + status);
-			alert("error: " + error);
-			alert("params: " + JSON.stringify(params));
-
+		, function(jsonString){
+			console.log(jsonString);
 			$("div[data-layered]").click(function(){
-				L.ui.close();
+				L.ui.close(true);
 			});
 		}
 	);
@@ -257,20 +250,13 @@ $("#locate1").click(function(){
 $("#locate2").click(function(){
 	var url = "http://www.test.com"
 	L.locate(url, {"a": 1, "b": 2}, {"passParams": {"c": 3, "d": 4}}
-		, function(xhr, status, response, params){
-			alert("xhr: " + JSON.stringify(xhr));
-			alert("status: " + status);
-			alert("response: " + JSON.stringify(response));
-			alert("params: " + JSON.stringify(params));
+		, function(jsonString){
+			console.log(jsonString);
 		}
-		, function(xhr, status, error, params){
-			alert("xhr: " + JSON.stringify(xhr));
-			alert("status: " + status);
-			alert("error: " + error);
-			alert("params: " + JSON.stringify(params));
-
+		, function(jsonString){
+			console.log(jsonString);
 			$("div[data-layered]").click(function(){
-				L.ui.close();
+				L.ui.close(true);
 			});
 		}
 	);
@@ -433,21 +419,11 @@ $("#file2").html(L.ui.file({"id": "fileset", "name": "fileset", "isMulti": true}
 		$("#locate1").click(function(){
 			var url = "https://raw.githubusercontent.com/babypaunch/libparts/master/test_data.json"
 			L.locate(url, {"a": 1, "b": 2}, {"passParams": {"c": 3, "d": 4}}
-				, function(xhr, status, response, params){
-					alert("xhr: " + JSON.stringify(xhr));
-					alert("status: " + status);
-					alert("response: " + JSON.stringify(response));
-					alert("params: " + JSON.stringify(params));
+				, function(jsonString){
+					console.log(jsonString);
 				}
-				, function(xhr, status, error, params){
-					alert("xhr: " + JSON.stringify(xhr));
-					alert("status: " + status);
-					alert("error: " + error);
-					alert("params: " + JSON.stringify(params));
-
-					$("div[data-layered]").click(function(){
-						L.ui.close();
-					});
+				, function(jsonString){
+					console.log(jsonString);
 				}
 			);
 		});
@@ -455,20 +431,13 @@ $("#file2").html(L.ui.file({"id": "fileset", "name": "fileset", "isMulti": true}
 		$("#locate2").click(function(){
 			var url = "http://www.test.com"
 			L.locate(url, {"a": 1, "b": 2}, {"passParams": {"c": 3, "d": 4}}
-				, function(xhr, status, response, params){
-					alert("xhr: " + JSON.stringify(xhr));
-					alert("status: " + status);
-					alert("response: " + JSON.stringify(response));
-					alert("params: " + JSON.stringify(params));
+				, function(jsonString){
+					console.log(jsonString);
 				}
-				, function(xhr, status, error, params){
-					alert("xhr: " + JSON.stringify(xhr));
-					alert("status: " + status);
-					alert("error: " + error);
-					alert("params: " + JSON.stringify(params));
-
+				, function(jsonString){
+					console.log(jsonString);
 					$("div[data-layered]").click(function(){
-						L.ui.close();
+						L.ui.close(true);
 					});
 				}
 			);

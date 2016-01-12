@@ -305,10 +305,13 @@ var L = {
 		return str.charAt(0).toUpperCase() + str.slice(1);
 	} //end: , cap: function(str){
 
-	, locate: function(url, params, options, successCallback, failCallback){
+	, locate: function(url, params, options, done, fail){
 		var defaults = {
 			"type": "post"
+			//, "dataType": "json"
+			//, "contentType": "application/json" //'application/x-www-form-urlencoded; charset=UTF-8'
 			, "block": true
+			, "successBlockClose": true
 			, "blockStyle": {
 				"position": "fixed"
 				, "top": 0
@@ -319,7 +322,7 @@ var L = {
 				, "text-align": "center"
 				, "z-index": 9999
 			}
-			, "img": "<img src='ajax-loader.gif' style='position: relative; top: 50%;'/>"
+			, "img": "<img src='ajax-loader.gif' style='position: relative; top: 50%; width: 16px; height: 11px;'/>"
 			, "passParams": {}
 		};
 		$.extend(true, defaults, options);
@@ -328,18 +331,26 @@ var L = {
 			$("body").append(L.ui.modal(defaults.blockStyle, defaults.img));
 		}
 
-		$[defaults.type](url, params, function(result, status, xhr){
-			L.ui.close();
-			if(successCallback !== undefined){
-				successCallback(result, status, xhr, defaults.passParams);
+		$.ajax({
+			"type": defaults.type
+			, "url": url
+			, "data": params
+			//, "dataType": defaults.dataType
+			//, "contentType": defaults.contentType
+			, success: function(data, status, xhr){
+				if(defaults.successBlockClose){
+					L.ui.close(defaults.block);
+				}
+				if(done !== undefined){
+					done(JSON.stringify([data, defaults.passParams]));
+				}
+			}, error: function(xhr, status, error){
+				if(fail !== undefined){
+					fail(JSON.stringify([xhr, defaults.passParams]));
+				}
 			}
-		})
-		.fail(function(xhr, status, error){ 
-			if(failCallback !== undefined){
-				failCallback(xhr, status, error, defaults.passParams);
-			}
-		});
-	} //end: , locate: function(url, params, options, successCallback, failCallback){
+		}); //end: $.ajax({
+	} //end: , locate: function(url, params, options, done, fail){
 
 	, ui: {
 		select: function(json, option){
@@ -486,11 +497,13 @@ var L = {
 		} //end: , removeFile: function(obj, jsonString){
 
 		, modal: function(json, str){
-			return "<div data-layered style='" + L.serialize(json, ":", ";") + "'>" + str + "</div>";
+			return "<div data-layered style='" + L.serialize(json, ":", ";") + "'>" + (str === undefined ? "" : str)+ "</div>";
 		} //end: , modal: function(json, str){
-		, close: function(){
-			$("div[data-layered]").remove();
-		} //end: , close: function(){
+		, close: function(isBlock){
+			if(isBlock){
+				$("div[data-layered]").remove();
+			}
+		} //end: , close: function(isBlock){
 
 		, table: function(head, body){
 			var ths = "";
