@@ -315,8 +315,8 @@ var L = {
 	, locate: function(url, params, options, done, fail){
 		var defaults = {
 			"type": "post"
-			//, "dataType": "json"
-			//, "contentType": "application/json" //'application/x-www-form-urlencoded; charset=UTF-8'
+			, "dataType": "json"
+			, "contentType": "application/json"
 			, "block": {
 				"use": true
 				, "successClose": true
@@ -328,23 +328,32 @@ var L = {
 				, "background": "rgba(0,0,0,0.5)"
 				, "text-align": "center"
 				, "z-index": 9999
-				, "img": "<img src='ajax-loader.gif' style='position: relative; top: calc(50% - 5.5px); width: 16px; height: 11px;'/>"
+				, "img": "<img src='data:image/gif;base64,R0lGODlhEAALAPQAAAAAAP///yQkJC4uLhQUFPj4+P///9DQ0Hx8fJ6enkRERNzc3LS0tHR0dJqamkBAQNjY2Pr6+rCwsBgYGCYmJgoKCsbGxiIiIgwMDEhISF5eXjQ0NBAQEAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh+QQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5+y967tYLyicBYE7EYkYAgAh+QQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh+QQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ+YrBH+hWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C+4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc+l4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa+kEAA7AAAAAAAAAAAA' style='position: relative; top: calc(50% - 5.5px); width: 16px; height: 11px;'/>"
 			}
 			, "bypass": {}
 		};
+		if(options !== undefined){
+			if(options.dataType === undefined){
+				delete defaults.dataType;
+			}
+			if(options.contentType === undefined){
+				delete defaults.contentType;
+			}
+		}
 		$.extend(true, defaults, options);
 
 		if(defaults.block){
 			var blockStyle = this.excepts(defaults.block, ["use", "successClose", "img"]);
-			$("body").append(L.ui.layer(blockStyle, defaults.block.img)).css({"overflow": "hidden"});
+			var $layer = $("div[data-layered]");
+			$layer.length > 0 ? $layer.show() : $("body").append(L.ui.layer(blockStyle, defaults.block.img)).css({"overflow": "hidden"});
 		}
 
 		$.ajax({
 			"type": defaults.type
 			, "url": url
 			, "data": params
-			//, "dataType": defaults.dataType
-			//, "contentType": defaults.contentType
+			, "dataType": defaults.dataType
+			, "contentType": defaults.contentType
 			, success: function(data, status, xhr){
 				if(defaults.block.successClose){
 					L.ui.closeLayer(defaults.block.use);
@@ -522,7 +531,7 @@ var L = {
 		, closeLayer: function(useBlock){
 			if(useBlock){
 				$("body").css({"overflow": "auto"});
-				$("div[data-layered]").remove();
+				$("div[data-layered]").hide();
 			}
 		} //end: , closeLayer: function(useBlock){
 
