@@ -229,14 +229,14 @@ $("#datefy2").text(L.datefy('1445562073583', 'mm/dd/YY hh:mi:ss.ms'));
 <pre class="prettyprint">
 $("#locate1").click(function(){
 	var url = "https://raw.githubusercontent.com/babypaunch/libparts/master/test_data.json"
-	L.locate(url, {"a": 1, "b": 2}, {"passParams": {"c": 3, "d": 4}}
+	L.locate(url, {"a": 1, "b": 2}, {"bypass": {"c": 3, "d": 4}}
 		, function(jsonString){
 			console.log(jsonString);
 		}
 		, function(jsonString){
 			console.log(jsonString);
 			$("div[data-layered]").click(function(){
-				L.ui.close(true);
+				L.ui.closeLayer(true);
 			});
 		}
 	);
@@ -249,14 +249,14 @@ $("#locate1").click(function(){
 <pre class="prettyprint">
 $("#locate2").click(function(){
 	var url = "http://www.test.com"
-	L.locate(url, {"a": 1, "b": 2}, {"passParams": {"c": 3, "d": 4}}
+	L.locate(url, {"a": 1, "b": 2}, {"bypass": {"c": 3, "d": 4}}
 		, function(jsonString){
 			console.log(jsonString);
 		}
 		, function(jsonString){
 			console.log(jsonString);
 			$("div[data-layered]").click(function(){
-				L.ui.close(true);
+				L.ui.closeLayer(true);
 			});
 		}
 	);
@@ -418,7 +418,7 @@ $("#file2").html(L.ui.file({"id": "fileset", "name": "fileset", "isMulti": true}
 
 		$("#locate1").click(function(){
 			var url = "https://raw.githubusercontent.com/babypaunch/libparts/master/test_data.json"
-			L.locate(url, {"a": 1, "b": 2}, {"passParams": {"c": 3, "d": 4}}
+			L.locate(url, {"a": 1, "b": 2}, {"bypass": {"c": 3, "d": 4}}
 				, function(jsonString){
 					console.log(jsonString);
 				}
@@ -430,21 +430,18 @@ $("#file2").html(L.ui.file({"id": "fileset", "name": "fileset", "isMulti": true}
 
 		$("#locate2").click(function(){
 			var url = "http://www.test.com"
-			L.locate(url, {"a": 1, "b": 2}, {"passParams": {"c": 3, "d": 4}}
+			L.locate(url, {"a": 1, "b": 2}, {"bypass": {"c": 3, "d": 4}}
 				, function(jsonString){
 					console.log(jsonString);
 				}
 				, function(jsonString){
 					console.log(jsonString);
 					$("div[data-layered]").click(function(){
-						L.ui.close(true);
+						L.ui.closeLayer(true);
 					});
 				}
 			);
 		});
-
-		/*
-		console.log(L.serialize({"a": "1", "b": "2", "c": "3"}, "=", ","));
 
 		var cols = [
 			{"text": "#", "name": "no", "width": "50px"}
@@ -462,9 +459,8 @@ $("#file2").html(L.ui.file({"id": "fileset", "name": "fileset", "isMulti": true}
 			, {"no": "3", "c": "c", "col1": "row3-1", "col2": "row3-2", "space": "C", "last": "3333"}
 		];
 
-		$("#temp").html(L.ui.table(cols, rows));
-
-		*/
+		//$("#temp").html(L.ui.table(cols, rows));
+		//console.log(L.ui.table(cols, rows));
 	</script>
 </body>
 </html>

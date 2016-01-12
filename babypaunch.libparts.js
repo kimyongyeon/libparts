@@ -264,20 +264,27 @@ var L = {
 		}
 	} //end: , validate: function($obj, opts, lang){
 
+	, excepts: function(self, arr){
+		var json = {};
+		for(var key in self){
+			if($.inArray(key, arr) === -1){
+				json[key] = self[key];
+			}
+		}
+		return json;
+	} //end: , excepts: function(self, arr){
+
 	, serialize: function(json, concat, separator, excepts){
 		var str = "";
+		if(excepts !== undefined && excepts.length > 0){
+			json = this.excepts(json, excepts);
+		}
+
 		for(var keys = Object.keys(json), i = 0; i < keys.length; i++){
 			var key = keys[i];
-
-			if(excepts !== undefined){
-				for(var j = 0; j < excepts.length; j++){
-					if(excepts[j] !== key){
-						str += key + (concat === undefined ? "=" : concat) + json[key] + (i + 1 === keys.length ? "" : (separator === undefined ? "&" : separator));
-					}
-				}
-			}else{
-				str += key + (concat === undefined ? "=" : concat) + json[key] + (i + 1 === keys.length ? "" : (separator === undefined ? "&" : separator));
-			}
+			var c = concat === undefined || concat === null;
+			var s = separator === undefined || separator === null;
+			str += key + (c ? "=" : concat) + json[key] + (i + 1 === keys.length ? "" : (s ? "&" : separator));
 		}
 		return str;
 	} //end: , serialize: function(json, concat, separator, excepts){
@@ -310,10 +317,10 @@ var L = {
 			"type": "post"
 			//, "dataType": "json"
 			//, "contentType": "application/json" //'application/x-www-form-urlencoded; charset=UTF-8'
-			, "block": true
-			, "successBlockClose": true
-			, "blockStyle": {
-				"position": "fixed"
+			, "block": {
+				"use": true
+				, "successClose": true
+				, "position": "fixed"
 				, "top": 0
 				, "left": 0
 				, "width": "100%"
@@ -321,14 +328,15 @@ var L = {
 				, "background": "rgba(0,0,0,0.5)"
 				, "text-align": "center"
 				, "z-index": 9999
+				, "img": "<img src='ajax-loader.gif' style='position: relative; top: calc(50% - 5.5px); width: 16px; height: 11px;'/>"
 			}
-			, "img": "<img src='ajax-loader.gif' style='position: relative; top: 50%; width: 16px; height: 11px;'/>"
-			, "passParams": {}
+			, "bypass": {}
 		};
 		$.extend(true, defaults, options);
 
 		if(defaults.block){
-			$("body").append(L.ui.modal(defaults.blockStyle, defaults.img));
+			var blockStyle = this.excepts(defaults.block, ["use", "successClose", "img"]);
+			$("body").append(L.ui.layer(blockStyle, defaults.block.img)).css({"overflow": "hidden"});
 		}
 
 		$.ajax({
@@ -338,15 +346,15 @@ var L = {
 			//, "dataType": defaults.dataType
 			//, "contentType": defaults.contentType
 			, success: function(data, status, xhr){
-				if(defaults.successBlockClose){
-					L.ui.close(defaults.block);
+				if(defaults.block.successClose){
+					L.ui.closeLayer(defaults.block.use);
 				}
 				if(done !== undefined){
-					done(JSON.stringify([data, defaults.passParams]));
+					done(JSON.stringify([data, defaults.bypass]));
 				}
 			}, error: function(xhr, status, error){
 				if(fail !== undefined){
-					fail(JSON.stringify([xhr, defaults.passParams]));
+					fail(JSON.stringify([xhr, defaults.bypass]));
 				}
 			}
 		}); //end: $.ajax({
@@ -496,14 +504,27 @@ var L = {
 			jsonString.isMulti ? $(obj).parent().remove() : $(obj).parent().parent().html(this.file(jsonString));
 		} //end: , removeFile: function(obj, jsonString){
 
-		, modal: function(json, str){
+		, layer: function(json, str){
 			return "<div data-layered style='" + L.serialize(json, ":", ";") + "'>" + (str === undefined ? "" : str)+ "</div>";
-		} //end: , modal: function(json, str){
-		, close: function(isBlock){
-			if(isBlock){
+		} //end: , layer: function(json, str){
+		, getLayerStyle: function(){
+			return {
+				"position": "fixed"
+				, "top": 0
+				, "left": 0
+				, "width": "100%"
+				, "height": "100%"
+				, "background": "rgba(0,0,0,0.5)"
+				, "text-align": "center"
+				, "z-index": 9999
+			};
+		} //end: , getLayerStyle: function(){
+		, closeLayer: function(useBlock){
+			if(useBlock){
+				$("body").css({"overflow": "auto"});
 				$("div[data-layered]").remove();
 			}
-		} //end: , close: function(isBlock){
+		} //end: , closeLayer: function(useBlock){
 
 		, table: function(head, body){
 			var ths = "";
@@ -515,23 +536,22 @@ var L = {
 				};
 				$.extend(true, head[i], thStyle);
 
-				//ths += "<th data-th-name='" + head[i].name + "' style='" + L.serialize(head[i], ":", ";", ["text", "name"]) + "'>" + head[i].text + "</th>";
-				ths += "<th data-th-name='" + head[i].name + "' style='" + L.serialize(head[i], ":", ";", ["text"]) + "'>" + head[i].text + "</th>";
+				ths += "<th data-th-name='" + head[i].name + "' style='" + L.serialize(head[i], ":", ";", ["text", "name"]) + "'>" + head[i].text + "</th>\n";
 			}
 
 			var trs = "";
 			for(var i = 0; i < body.length; i++){
 				var tds = "";
 				for(var j in body[i]){
-					tds += "<td>" + body[i][j] + "</td>";
+					tds += "<td>" + body[i][j] + "</td>\n";
 				}
-				trs += "<tr style='" + (i % 2 === 0 ? "" : "background: #eee") + "'>" + tds + "</tr>";
+				trs += "<tr style='" + (i % 2 === 0 ? "" : "background: #eee") + "'>" + tds + "</tr>\n";
 			}
 
-			return "<table style='table-layout: fixed;'>"
-				+ "<thead><tr>" + ths + "</tr></thead>"
-				+ "<tbody>" + trs + "</tbody>"
-			+ "</table>";
+			return "<table style='table-layout: fixed;'>\n"
+				+ "<thead>\n<tr>\n" + ths + "</tr>\n</thead>\n"
+				+ "<tbody>" + trs + "</tbody>\n"
+			+ "</table>\n";
 		} //end: table: function(head, body){
 	} //end: , ui: {
 }; //end: var L = {
