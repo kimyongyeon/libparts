@@ -2,8 +2,8 @@
 * javascript libs for share
 * dev: 정대규
 * first: 2015.10.24
-* update: 2016.01.07
-* version: 0.6
+* update: 2016.01.13
+* version: 0.7
 * lisence: MIT(free)
 */
 "use strict";
@@ -312,6 +312,10 @@ var L = {
 		return str.charAt(0).toUpperCase() + str.slice(1);
 	} //end: , cap: function(str){
 
+	, comma: function(n, strip){
+		return strip ? n.replace(/[^\d]+/g, '') : n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); 
+	} //end: , comma: function(n, strip){
+
 	, locate: function(url, params, options, done, fail){
 		var defaults = {
 			"type": "post"
@@ -342,9 +346,9 @@ var L = {
 		}
 		$.extend(true, defaults, options);
 
-		if(defaults.block){
+		if(defaults.block.use){
 			var blockStyle = this.excepts(defaults.block, ["use", "successClose", "img"]);
-			var $layer = $("div[data-layered]");
+			var $layer = $("div[data-layered='0']");
 			$layer.length > 0 ? $layer.show() : $("body").append(L.ui.layer(blockStyle, defaults.block.img)).css({"overflow": "hidden"});
 		}
 
@@ -513,9 +517,10 @@ var L = {
 			jsonString.isMulti ? $(obj).parent().remove() : $(obj).parent().parent().html(this.file(jsonString));
 		} //end: , removeFile: function(obj, jsonString){
 
-		, layer: function(json, str){
-			return "<div data-layered style='" + L.serialize(json, ":", ";") + "'>" + (str === undefined ? "" : str)+ "</div>";
-		} //end: , layer: function(json, str){
+		, layer: function(json, str, layerIndex){
+			var attr = layerIndex === undefined ? "data-layered='0'" : "data-layered='" + layerIndex + "'";
+			return "<div " + attr + " style='" + L.serialize(json, ":", ";") + "'>" + (str === undefined ? "" : str)+ "</div>";
+		} //end: , layer: function(json, str, layerIndex){
 		, getLayerStyle: function(){
 			return {
 				"position": "fixed"
@@ -528,12 +533,13 @@ var L = {
 				, "z-index": 9999
 			};
 		} //end: , getLayerStyle: function(){
-		, closeLayer: function(useBlock){
+		, closeLayer: function(useBlock, layerIndex){
 			if(useBlock){
 				$("body").css({"overflow": "auto"});
-				$("div[data-layered]").hide();
+				var attr = layerIndex === undefined ? "data-layered='0'" : "data-layered='" + layerIndex + "'";
+				$("div[" + attr + "]").hide();
 			}
-		} //end: , closeLayer: function(useBlock){
+		} //end: , closeLayer: function(useBlock, layerIndex){
 
 		, table: function(head, body){
 			var ths = "";
